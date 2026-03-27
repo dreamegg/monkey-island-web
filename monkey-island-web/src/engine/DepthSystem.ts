@@ -156,6 +156,9 @@ async function loadDepthMapImage(
 ): Promise<void> {
   if (depthMaps.has(roomId)) return;
 
+  const base = import.meta.env.BASE_URL;
+  const resolvedPath = path.startsWith('/') && !path.startsWith('//') ? base + path.slice(1) : path;
+
   return new Promise<void>((resolve) => {
     const img = new Image();
     img.onload = () => {
@@ -168,7 +171,7 @@ async function loadDepthMapImage(
       resolve();
     };
     img.onerror = () => resolve(); // graceful fallback
-    img.src = path;
+    img.src = resolvedPath;
   });
 }
 

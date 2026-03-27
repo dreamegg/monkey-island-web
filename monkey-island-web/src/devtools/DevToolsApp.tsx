@@ -1006,6 +1006,32 @@ function AssetViewerPanel() {
         </div>
       </div>
 
+      {/* Depth Analysis */}
+      <div style={SX.section}>
+        <div style={SX.sectionTitle}>뎁스 분석 (Depth Maps)</div>
+        <div style={{ color: '#666', fontSize: 11, fontFamily: 'monospace', marginBottom: 10 }}>
+          초록 영역 = 워크에어리어 폴리곤 | 노란선 = 원근감 스케일 단계
+        </div>
+        <div style={SX.grid}>
+          {ASSET_CATALOG.backgrounds.map((id) => (
+            <div key={id} style={SX.bgCard}>
+              <img
+                src={ap(`/room-configs/${id}_debug.png`)}
+                alt={`${id}_depth`}
+                style={SX.bgImg}
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  el.style.background = '#222';
+                  el.style.display = 'block';
+                  el.alt = '분석 결과 없음';
+                }}
+              />
+              <div style={SX.label}>{id} · depth map</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }
