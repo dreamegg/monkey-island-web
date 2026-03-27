@@ -19,6 +19,7 @@ import {
 } from '../engine/DepthSystem';
 import type { RoomDepthConfig } from '../engine/DepthSystem';
 import { preloadAllBackgrounds, getImage } from '../utils/assetLoader';
+import { ap } from '../utils/paths';
 
 // ── Styles ──────────────────────────────────────────────────
 
@@ -104,7 +105,7 @@ const S = {
 
 // ── Main App ────────────────────────────────────────────────
 
-type TabId = 'rooms' | 'dialogues' | 'items' | 'map';
+type TabId = 'rooms' | 'dialogues' | 'items' | 'map' | 'assets';
 
 export default function DevToolsApp() {
   const [tab, setTab] = useState<TabId>('rooms');
@@ -122,6 +123,7 @@ export default function DevToolsApp() {
     { id: 'dialogues', label: 'Dialogue Viewer' },
     { id: 'items', label: 'Items & Inventory' },
     { id: 'map', label: 'Room Map' },
+    { id: 'assets', label: 'Assets' },
   ];
 
   return (
@@ -144,6 +146,7 @@ export default function DevToolsApp() {
         {tab === 'dialogues' && <DialogueViewerPanel />}
         {tab === 'items' && <ItemManagerPanel />}
         {tab === 'map' && <RoomMapPanel />}
+        {tab === 'assets' && <AssetViewerPanel />}
       </div>
     </div>
   );
@@ -896,6 +899,113 @@ function RoomMapPanel() {
           </tbody>
         </table>
       </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// Asset Viewer Panel
+// ═══════════════════════════════════════════════════════════
+
+const ASSET_CATALOG = {
+  backgrounds: ['harbor', 'tavern', 'forest', 'beach', 'cave'],
+  sprites: [
+    { name: 'guybrush', frames: ['guybrush_idle', 'guybrush_walk1', 'guybrush_walk2', 'guybrush_walk3', 'guybrush_walk4'] },
+    { name: 'lechuck', frames: ['lechuck_idle', 'lechuck_walk1', 'lechuck_walk2'] },
+    { name: 'elaine', frames: ['elaine_idle', 'elaine_walk1', 'elaine_walk2'] },
+    { name: 'bartender', frames: ['bartender'] },
+    { name: 'three_pirates', frames: ['three_pirates'] },
+    { name: 'voodoo_lady', frames: ['voodoo_lady'] },
+  ],
+  portraits: [
+    'guybrush_neutral', 'guybrush_determined', 'guybrush_surprised',
+    'bartender_suspicious',
+    'elaine_concerned', 'elaine_confident',
+    'lechuck_angry', 'lechuck_sinister',
+    'voodoo_lady_mysterious',
+  ],
+};
+
+const SX = {
+  section: { marginBottom: 32 },
+  sectionTitle: { color: PALETTE.uiText, fontFamily: "'Press Start 2P', monospace", fontSize: 13, marginBottom: 12, borderBottom: '1px solid #333', paddingBottom: 6 },
+  grid: { display: 'flex', flexWrap: 'wrap' as const, gap: 12 },
+  bgCard: { background: '#111', border: '1px solid #333', borderRadius: 4, overflow: 'hidden', cursor: 'default' },
+  bgImg: { display: 'block', width: 240, height: 120, imageRendering: 'pixelated' as const },
+  label: { padding: '4px 8px', fontSize: 11, color: '#aaa', fontFamily: 'monospace' },
+  spriteGroup: { marginBottom: 16 },
+  spriteName: { color: PALETTE.uiVerbActive, fontSize: 12, fontFamily: 'monospace', marginBottom: 6 },
+  spriteRow: { display: 'flex', gap: 8 },
+  spriteCard: { background: '#111', border: '1px solid #333', borderRadius: 4, textAlign: 'center' as const, overflow: 'hidden' },
+  spriteImg: { display: 'block', width: 64, height: 96, imageRendering: 'pixelated' as const },
+  frameLabel: { fontSize: 9, color: '#666', padding: '2px 4px', fontFamily: 'monospace' },
+  portraitCard: { background: '#111', border: '1px solid #333', borderRadius: 4, overflow: 'hidden', textAlign: 'center' as const },
+  portraitImg: { display: 'block', width: 96, height: 96, imageRendering: 'pixelated' as const },
+};
+
+function AssetViewerPanel() {
+  return (
+    <div style={{ padding: 24, overflowY: 'auto', height: '100%' }}>
+
+      {/* Backgrounds */}
+      <div style={SX.section}>
+        <div style={SX.sectionTitle}>배경 이미지 (Backgrounds)</div>
+        <div style={SX.grid}>
+          {ASSET_CATALOG.backgrounds.map((id) => (
+            <div key={id} style={SX.bgCard}>
+              <img
+                src={ap(`/assets/backgrounds/${id}.png`)}
+                alt={id}
+                style={SX.bgImg}
+                onError={(e) => { (e.target as HTMLImageElement).style.background = '#222'; }}
+              />
+              <div style={SX.label}>{id}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sprites */}
+      <div style={SX.section}>
+        <div style={SX.sectionTitle}>스프라이트 (Sprites)</div>
+        {ASSET_CATALOG.sprites.map(({ name, frames }) => (
+          <div key={name} style={SX.spriteGroup}>
+            <div style={SX.spriteName}>{name}</div>
+            <div style={SX.spriteRow}>
+              {frames.map((frame) => (
+                <div key={frame} style={SX.spriteCard}>
+                  <img
+                    src={ap(`/assets/sprites/${frame}.png`)}
+                    alt={frame}
+                    style={SX.spriteImg}
+                    onError={(e) => { (e.target as HTMLImageElement).style.background = '#1a1a2e'; }}
+                  />
+                  <div style={SX.frameLabel}>{frame.replace(`${name}_`, '') || frame}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Portraits */}
+      <div style={SX.section}>
+        <div style={SX.sectionTitle}>초상화 (Portraits)</div>
+        <div style={SX.grid}>
+          {ASSET_CATALOG.portraits.map((p) => (
+            <div key={p} style={SX.portraitCard}>
+              <img
+                src={ap(`/assets/portraits/${p}.png`)}
+                alt={p}
+                style={SX.portraitImg}
+                onError={(e) => { (e.target as HTMLImageElement).style.background = '#1a1a2e'; }}
+              />
+              <div style={{ ...SX.frameLabel, padding: '4px 6px', maxWidth: 96 }}>{p}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

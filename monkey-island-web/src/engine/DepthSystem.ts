@@ -45,7 +45,7 @@ export function loadRoomDepthConfig(
 
   const promise = (async () => {
     try {
-      const res = await fetch(`/room-configs/${roomId}.json`);
+      const res = await fetch(`${import.meta.env.BASE_URL}room-configs/${roomId}.json`);
       if (!res.ok) return null;
       const config: RoomDepthConfig = await res.json();
       roomConfigs.set(roomId, config);

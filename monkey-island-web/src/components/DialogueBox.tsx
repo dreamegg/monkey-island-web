@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useGameStore } from '../engine/GameEngine';
 import { getDialogueNode, getAvailableChoices } from '../engine/DialogueEngine';
 import { PALETTE } from '../engine/types';
+import { ap } from '../utils/paths';
 
 const TYPEWRITER_SPEED = 35; // ms per character
 
@@ -141,7 +142,7 @@ export default function DialogueBox() {
             }}
           >
             <img
-              src={node.portrait}
+              src={ap(node.portrait)}
               alt={node.speaker}
               style={{
                 width: '100%',

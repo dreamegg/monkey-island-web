@@ -1,3 +1,5 @@
+import { ap } from './paths';
+
 const imageCache = new Map<string, HTMLImageElement>();
 const loadingPromises = new Map<string, Promise<HTMLImageElement>>();
 
@@ -19,7 +21,7 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
       loadingPromises.delete(src);
       reject(new Error(`Failed to load: ${src}`));
     };
-    img.src = src;
+    img.src = ap(src);
   });
 
   loadingPromises.set(src, promise);

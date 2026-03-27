@@ -19,7 +19,9 @@ const ROOM_MUSIC: Record<string, string> = {
 function getOrCreateAudio(src: string): HTMLAudioElement {
   let audio = audioCache.get(src);
   if (!audio) {
-    audio = new Audio(src);
+    const base = import.meta.env.BASE_URL;
+    const resolvedSrc = src.startsWith('/') && !src.startsWith('//') ? base + src.slice(1) : src;
+    audio = new Audio(resolvedSrc);
     audio.loop = true;
     audio.volume = 0;
     audioCache.set(src, audio);

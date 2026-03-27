@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PALETTE } from '../engine/types';
+import { ap } from '../utils/paths';
 
 interface DialogueLine {
   speaker: string;
@@ -121,7 +122,7 @@ export default function IntroScene({ onFinish }: { onFinish: () => void }) {
   useEffect(() => {
     const img = new Image();
     img.onload = () => setBgLoaded(true);
-    img.src = '/assets/backgrounds/harbor.png';
+    img.src = ap('/assets/backgrounds/harbor.png');
   }, []);
 
   // Fade in effect
@@ -190,7 +191,7 @@ export default function IntroScene({ onFinish }: { onFinish: () => void }) {
       >
         {bgLoaded && (
           <img
-            src="/assets/backgrounds/harbor.png"
+            src={ap('/assets/backgrounds/harbor.png')}
             alt=""
             style={{
               width: '100%',
@@ -297,7 +298,7 @@ export default function IntroScene({ onFinish }: { onFinish: () => void }) {
                 }}
               >
                 <img
-                  src={line.portrait}
+                  src={ap(line.portrait)}
                   alt={line.speaker}
                   style={{
                     width: '100%',
