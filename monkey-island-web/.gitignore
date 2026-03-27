@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+*.swp
+*.swo
+.omc/state/
+.omc/sessions/
+tools/audio-pipeline/.venv/
+tools/depth-analyzer/.venv/
+tools/asset-pipeline/.venv/

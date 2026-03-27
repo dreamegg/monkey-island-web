@@ -1,0 +1,623 @@
+# =============================================================================
+# Monkey Island Web - Asset Generation Prompts
+# FLUX.1-dev + PixelArt LoRA (nerijs/pixel-art-xl)
+# =============================================================================
+# Usage:
+#   python generate.py --type background --name harbor
+#   python generate.py --type all --batch
+#   python generate.py --batch prompts.yaml
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Shared style suffix injected into every prompt
+# ---------------------------------------------------------------------------
+style:
+  pixel_art_base: >-
+    pixel art, 16-bit era, lucasarts point-and-click adventure game style,
+    EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic,
+    monkey island inspired
+  negative_base: >-
+    3d render, realistic, photograph, blurry, anti-aliased, smooth gradients,
+    modern art style, watermark, text overlay, UI elements, HUD
+
+# ---------------------------------------------------------------------------
+# BACKGROUNDS  (source: 320×200 → display: 640×400 @ 2x, 32 colors)
+# ---------------------------------------------------------------------------
+backgrounds:
+  harbor:
+    name: harbor
+    seed: 1001
+    description: >-
+      pirate harbor at dusk, weathered wooden dock extending into calm dark water,
+      tall sailing ship with skull flag anchored nearby, flickering torch lights
+      on dock posts, moonlight reflecting on water ripples, barrels and crates
+      stacked on dock, distant island silhouette, atmospheric fog near water surface,
+      dramatic sky with clouds and stars emerging
+    notes: "Room 1 - starting location"
+
+  tavern:
+    name: tavern
+    seed: 1002
+    description: >-
+      interior of a dimly lit pirate tavern, long wooden bar counter on the right,
+      shelves of rum bottles and grog mugs behind bar, large chandelier with
+      candles hanging from low ceiling, wooden tables and stools, treasure map
+      pinned to the wall, wanted posters, barrels in corner, warm orange candlelight,
+      smoke-filled atmosphere, creaky wooden floor planks
+    notes: "Room 2 - SCUMM bar interior"
+
+  forest:
+    name: forest
+    seed: 1003
+    description: >-
+      dense tropical jungle path at night, tall palm trees and exotic foliage
+      forming a canopy, mysterious fireflies, ancient stone ruins visible through
+      trees, winding dirt path leading deeper into forest, giant mushrooms glowing
+      softly, twisted roots across the path, eerie green mist near ground,
+      glimpse of starry sky through tree gaps
+    notes: "Room 3 - forest trail"
+
+  beach:
+    name: beach
+    seed: 1004
+    description: >-
+      tropical beach at night with white sand and lapping ocean waves, three
+      tall palm trees leaning over beach, large skull-shaped rock formation on
+      right side, crackling pirate campfire with embers, moonlit ocean stretching
+      to horizon, dark cave entrance in cliff face on left, small beach crabs,
+      seashells and driftwood on sand, starry sky with large tropical moon
+    notes: "Room 4 - beach area"
+
+  cave:
+    name: cave
+    seed: 1005
+    description: >-
+      dark mysterious cave interior, dramatic stalactites hanging from high ceiling,
+      underground river flowing through center with glowing bioluminescent water,
+      large crystal formations catching light, ancient carved stone steps descending,
+      glowing mushrooms providing dim purple-green light, bats roosting in shadows,
+      cave walls with old pirate markings and carvings, mysterious treasure chest
+      partially visible in background
+    notes: "Room 5 - underground cave"
+
+# ---------------------------------------------------------------------------
+# CHARACTER SPRITES  (source: 32×48/frame → display: 64×96 @ 2x, 16 colors)
+# Walk cycles: 4 directions × 4 frames = 16 frames per character
+# ---------------------------------------------------------------------------
+characters:
+  guybrush:
+    name: guybrush
+    seed: 2001
+    description: >-
+      young lanky blonde pirate hero, determined cheerful expression, wearing
+      red long-sleeved shirt with white collar, blue baggy pants, brown leather
+      boots, small brown belt, side profile walking pose, arms swinging naturally,
+      transparent background, single character centered
+    walk_cycle:
+      directions: [south, north, west, east]
+      frames_per_direction: 4
+    notes: "Main protagonist - Guybrush Threepwood"
+
+  lechuck:
+    name: lechuck
+    seed: 2002
+    description: >-
+      ghost pirate captain, glowing ethereal blue-green aura, large tattered
+      pirate captain coat with gold buttons, massive black beard made of shadow
+      and smoke, glowing red menacing eyes, undead skeletal hands, imposing tall
+      figure, dramatic ghostly trail, transparent background, single character centered
+    walk_cycle:
+      directions: [south, north, west, east]
+      frames_per_direction: 4
+    notes: "Main antagonist - LeChuck"
+
+  elaine:
+    name: elaine
+    seed: 2003
+    description: >-
+      confident female governor, flowing auburn-brown hair, elegant but practical
+      dress in deep blue with gold trim, determined confident pose, cape flowing
+      behind, boots, beautiful but no-nonsense expression, transparent background,
+      single character centered
+    walk_cycle:
+      directions: [south, north, west, east]
+      frames_per_direction: 4
+    notes: "Love interest - Governor Elaine Marley"
+
+  voodoo_lady:
+    name: voodoo_lady
+    seed: 2004
+    description: >-
+      mysterious old voodoo woman, dark wrinkled skin, wild grey hair with
+      colorful beads and bones woven in, flowing purple and black robes with
+      voodoo symbols, necklace of bones and feathers, wise piercing eyes,
+      hunched slightly but powerful presence, transparent background, centered
+    walk_cycle:
+      directions: [south]
+      frames_per_direction: 2
+    notes: "NPC - Voodoo Lady (limited movement)"
+
+  bartender:
+    name: bartender
+    seed: 2005
+    description: >-
+      gruff pirate bartender, stocky build, bald head with red bandana,
+      brown leather apron over striped shirt, thick arms, handlebar mustache,
+      suspicious expression, holding a rag, transparent background, centered
+    walk_cycle:
+      directions: [south, west, east]
+      frames_per_direction: 2
+    notes: "NPC - Tavern bartender"
+
+  three_pirates:
+    name: three_pirates
+    seed: 2006
+    description: >-
+      trio of generic pirate crew members sitting together, varied heights,
+      ragged pirate clothes in muted earth tones, assorted hats and bandanas,
+      weathered faces, sitting/idle pose, transparent background
+    walk_cycle:
+      directions: [south]
+      frames_per_direction: 1
+    notes: "NPC - Background pirates at tavern"
+
+# ---------------------------------------------------------------------------
+# OBJECTS  (source: 32×32 → display: 64×64 @ 2x, 16 colors)
+# Interactive scene objects and pickups
+# ---------------------------------------------------------------------------
+objects:
+  # Harbor objects
+  barrel:
+    name: barrel
+    seed: 3001
+    description: >-
+      old weathered wooden rum barrel, dark brown oak staves with iron bands,
+      slightly tilted, worn label saying RUM in faded letters, transparent background, centered
+    room: harbor
+
+  dock_sign:
+    name: dock_sign
+    seed: 3002
+    description: >-
+      old wooden dock sign hanging on chains, carved and painted letters,
+      weathered and salt-stained wood, swinging slightly, transparent background, centered
+    room: harbor
+
+  torch:
+    name: torch
+    seed: 3003
+    description: >-
+      wall-mounted wooden torch with bright flickering flame, orange and yellow
+      fire with light smoke, iron bracket holder, glowing light effect,
+      transparent background, centered
+    room: harbor
+
+  anchor:
+    name: anchor
+    seed: 3004
+    description: >-
+      large iron ship anchor with heavy chain links, rusty metal, barnacles
+      at base, traditional nautical anchor shape, transparent background, centered
+    room: harbor
+
+  rope_coil:
+    name: rope_coil
+    seed: 3005
+    description: >-
+      coiled hemp rope on dock, thick nautical rope, neatly coiled in circle,
+      frayed ends, fibrous texture in pixel art style, transparent background, centered
+    room: harbor
+
+  # Tavern objects
+  grog_mug:
+    name: grog_mug
+    seed: 3101
+    description: >-
+      large wooden tankard overflowing with foamy dark grog, bubbles rising,
+      stained wood with metal handle, foam dripping down sides,
+      transparent background, centered
+    room: tavern
+
+  rum_bottle:
+    name: rum_bottle
+    seed: 3102
+    description: >-
+      dark green glass rum bottle with cork stopper, skull and crossbones label,
+      amber liquid visible inside, slightly dusty, transparent background, centered
+    room: tavern
+
+  treasure_map:
+    name: treasure_map
+    seed: 3103
+    description: >-
+      rolled parchment treasure map tied with twine, aged yellowed paper,
+      partially visible red X mark, burned edges, mysterious markings,
+      transparent background, centered
+    room: tavern
+
+  candle:
+    name: candle
+    seed: 3104
+    description: >-
+      melted white candle in brass holder, dripping wax, small flickering flame,
+      wax pooled at base, warm golden light glow, transparent background, centered
+    room: tavern
+
+  wanted_poster:
+    name: wanted_poster
+    seed: 3105
+    description: >-
+      old WANTED poster, yellowed paper with torn edges, dark border,
+      pirate silhouette in center, reward text, pinned to wall,
+      transparent background, centered
+    room: tavern
+
+  # Forest objects
+  mushroom_glow:
+    name: mushroom_glow
+    seed: 3201
+    description: >-
+      large bioluminescent mushroom, glowing soft blue-purple light,
+      spotted cap, fantasy forest style, magical particle glow effect,
+      transparent background, centered
+    room: forest
+
+  stone_idol:
+    name: stone_idol
+    seed: 3202
+    description: >-
+      ancient carved stone idol, weathered grey stone, tribal face carving,
+      covered in jungle moss, mysterious runes on sides,
+      transparent background, centered
+    room: forest
+
+  wooden_bridge:
+    name: wooden_bridge
+    seed: 3203
+    description: >-
+      rickety wooden rope bridge section, worn plank boards with gaps,
+      frayed rope sides, mossy and weathered, tropical forest style,
+      transparent background, centered
+    room: forest
+
+  # Beach objects
+  palm_tree:
+    name: palm_tree
+    seed: 3301
+    description: >-
+      tall leaning coconut palm tree, curved brown trunk with bark rings,
+      large green fronds at top, coconuts visible, tropical beach style,
+      transparent background, centered
+    room: beach
+
+  skull_rock:
+    name: skull_rock
+    seed: 3302
+    description: >-
+      large rocky formation shaped like a skull, dark grey stone,
+      hollow eye sockets, weathered and mossy, ominous appearance,
+      transparent background, centered
+    room: beach
+
+  campfire:
+    name: campfire
+    seed: 3303
+    description: >-
+      small beach campfire, crossed sticks with bright orange flames,
+      glowing ember base, smoke wisps rising, warm light casting effect,
+      transparent background, centered
+    room: beach
+
+  # Cave objects
+  crystal_shard:
+    name: crystal_shard
+    seed: 3401
+    description: >-
+      glowing crystal formation shard, translucent blue-purple gem,
+      faceted surfaces catching light, magical glow emanating from within,
+      transparent background, centered
+    room: cave
+
+  old_chest:
+    name: old_chest
+    seed: 3402
+    description: >-
+      old wooden treasure chest, iron lock and hinges, domed lid,
+      aged wood with iron bands, partially open showing golden glow inside,
+      transparent background, centered
+    room: cave
+
+  # Inventory / pickup items
+  key:
+    name: key
+    seed: 3501
+    description: >-
+      ornate skeleton key, old iron, intricate bow design with skull motif,
+      slightly rusty, detailed key teeth, transparent background, centered
+    room: inventory
+
+  cutlass:
+    name: cutlass
+    seed: 3502
+    description: >-
+      pirate cutlass sword, curved single-edged blade, brass guard,
+      wrapped leather handle, polished steel with slight patina,
+      transparent background, centered
+    room: inventory
+
+  spyglass:
+    name: spyglass
+    seed: 3503
+    description: >-
+      brass nautical spyglass telescope, extended position, engraved metal,
+      leather grip section, lens glinting, antique nautical instrument,
+      transparent background, centered
+    room: inventory
+
+  compass:
+    name: compass
+    seed: 3504
+    description: >-
+      old brass nautical compass, round case with glass face, ornate N-S-E-W
+      markings, red magnetic needle pointing north, worn engraving on case,
+      transparent background, centered
+    room: inventory
+
+# ---------------------------------------------------------------------------
+# INVENTORY ICONS  (source: 24×24 → display: 48×48 @ 2x, 16 colors)
+# Smaller versions for inventory UI display
+# ---------------------------------------------------------------------------
+inventory_icons:
+  key_icon:
+    name: key_icon
+    seed: 4001
+    description: >-
+      tiny pixel art skeleton key icon, dark iron color, simple but readable
+      at small size, transparent background, centered
+    references: key
+
+  cutlass_icon:
+    name: cutlass_icon
+    seed: 4002
+    description: >-
+      tiny pixel art cutlass sword icon, curved blade, clear silhouette,
+      readable at small size, transparent background, centered
+    references: cutlass
+
+  map_icon:
+    name: map_icon
+    seed: 4003
+    description: >-
+      tiny pixel art rolled map icon, tan parchment color, small red X visible,
+      tied with string, readable at small size, transparent background, centered
+    references: treasure_map
+
+  mug_icon:
+    name: mug_icon
+    seed: 4004
+    description: >-
+      tiny pixel art grog mug icon, dark tankard with foam top,
+      readable at small size, transparent background, centered
+    references: grog_mug
+
+  bottle_icon:
+    name: bottle_icon
+    seed: 4005
+    description: >-
+      tiny pixel art rum bottle icon, dark green bottle shape,
+      cork visible, readable at small size, transparent background, centered
+    references: rum_bottle
+
+  spyglass_icon:
+    name: spyglass_icon
+    seed: 4006
+    description: >-
+      tiny pixel art telescope icon, brass color, extended tube shape,
+      readable at small size, transparent background, centered
+    references: spyglass
+
+  compass_icon:
+    name: compass_icon
+    seed: 4007
+    description: >-
+      tiny pixel art compass icon, round face with needle, cardinal directions,
+      readable at small size, transparent background, centered
+    references: compass
+
+# ---------------------------------------------------------------------------
+# PORTRAITS  (source: 64×64 → display: 128×128 @ 2x, 16 colors)
+# Character close-up faces for dialogue boxes
+# ---------------------------------------------------------------------------
+portraits:
+  guybrush_neutral:
+    name: guybrush_neutral
+    seed: 5001
+    description: >-
+      close-up portrait of young blonde pirate hero, friendly open face,
+      bright blue eyes, medium-length blonde hair, slight smile, red shirt
+      collar visible at bottom, dialogue portrait style, expressive, facing right
+    character: guybrush
+    expression: neutral
+
+  guybrush_surprised:
+    name: guybrush_surprised
+    seed: 5002
+    description: >-
+      close-up portrait of young blonde pirate hero, shocked wide eyes,
+      mouth open in surprise, eyebrows raised high, blonde hair slightly
+      disheveled, dialogue portrait style, very expressive, facing right
+    character: guybrush
+    expression: surprised
+
+  guybrush_determined:
+    name: guybrush_determined
+    seed: 5003
+    description: >-
+      close-up portrait of young blonde pirate hero, focused determined expression,
+      eyes narrowed slightly, jaw set, confident look, dialogue portrait style,
+      facing right
+    character: guybrush
+    expression: determined
+
+  lechuck_angry:
+    name: lechuck_angry
+    seed: 5101
+    description: >-
+      close-up portrait of ghost pirate captain, menacing glowing red eyes,
+      massive black smoky beard, tattered captain hat, ethereal blue glow
+      around face, furious expression, scary undead appearance, dialogue portrait,
+      facing left
+    character: lechuck
+    expression: angry
+
+  lechuck_sinister:
+    name: lechuck_sinister
+    seed: 5102
+    description: >-
+      close-up portrait of ghost pirate captain, evil sinister smirk,
+      half-lidded glowing red eyes, smoky beard curling, dramatic shadow,
+      unsettling supernatural appearance, dialogue portrait, facing left
+    character: lechuck
+    expression: sinister
+
+  elaine_confident:
+    name: elaine_confident
+    seed: 5201
+    description: >-
+      close-up portrait of female governor, confident strong expression,
+      auburn-brown hair framing face, sharp intelligent eyes, slight knowing
+      smile, elegant blue collar visible, dialogue portrait style, facing left
+    character: elaine
+    expression: confident
+
+  elaine_concerned:
+    name: elaine_concerned
+    seed: 5202
+    description: >-
+      close-up portrait of female governor, worried concerned expression,
+      brow furrowed slightly, eyes showing worry but still strong,
+      auburn-brown hair, dialogue portrait style, facing left
+    character: elaine
+    expression: concerned
+
+  voodoo_lady_mysterious:
+    name: voodoo_lady_mysterious
+    seed: 5301
+    description: >-
+      close-up portrait of old voodoo woman, deeply wrinkled dark face,
+      wild grey hair with colorful beads, one eye squinting wisely,
+      mysterious knowing smile, bone necklace visible, eerie candle glow
+      lighting from below, dialogue portrait, facing right
+    character: voodoo_lady
+    expression: mysterious
+
+  bartender_suspicious:
+    name: bartender_suspicious
+    seed: 5401
+    description: >-
+      close-up portrait of stocky pirate bartender, skeptical narrowed eyes,
+      bald head with red bandana, thick mustache, crossed arms suggested,
+      suspicious unfriendly expression, dialogue portrait, facing right
+    character: bartender
+    expression: suspicious
+
+# ---------------------------------------------------------------------------
+# Batch generation groups (for --batch mode by room)
+# ---------------------------------------------------------------------------
+batch_groups:
+  room_harbor:
+    - backgrounds.harbor
+    - objects.barrel
+    - objects.dock_sign
+    - objects.torch
+    - objects.anchor
+    - objects.rope_coil
+
+  room_tavern:
+    - backgrounds.tavern
+    - objects.grog_mug
+    - objects.rum_bottle
+    - objects.treasure_map
+    - objects.candle
+    - objects.wanted_poster
+
+  room_forest:
+    - backgrounds.forest
+    - objects.mushroom_glow
+    - objects.stone_idol
+    - objects.wooden_bridge
+
+  room_beach:
+    - backgrounds.beach
+    - objects.palm_tree
+    - objects.skull_rock
+    - objects.campfire
+
+  room_cave:
+    - backgrounds.cave
+    - objects.crystal_shard
+    - objects.old_chest
+
+  all_characters:
+    - characters.guybrush
+    - characters.lechuck
+    - characters.elaine
+    - characters.voodoo_lady
+    - characters.bartender
+
+  all_portraits:
+    - portraits.guybrush_neutral
+    - portraits.guybrush_surprised
+    - portraits.guybrush_determined
+    - portraits.lechuck_angry
+    - portraits.lechuck_sinister
+    - portraits.elaine_confident
+    - portraits.elaine_concerned
+    - portraits.voodoo_lady_mysterious
+    - portraits.bartender_suspicious
+
+  all_inventory:
+    - inventory_icons.key_icon
+    - inventory_icons.cutlass_icon
+    - inventory_icons.map_icon
+    - inventory_icons.mug_icon
+    - inventory_icons.bottle_icon
+    - inventory_icons.spyglass_icon
+    - inventory_icons.compass_icon
+
+  # Legacy flat list for --batch prompts.yaml compatibility
+  assets:
+    - type: background
+      name: harbor
+    - type: background
+      name: tavern
+    - type: background
+      name: forest
+    - type: background
+      name: beach
+    - type: background
+      name: cave
+    - type: character
+      name: guybrush
+    - type: character
+      name: lechuck
+    - type: character
+      name: elaine
+    - type: object
+      name: barrel
+    - type: object
+      name: grog_mug
+    - type: object
+      name: treasure_map
+    - type: object
+      name: key
+    - type: object
+      name: cutlass
+    - type: portrait
+      name: guybrush_neutral
+    - type: portrait
+      name: lechuck_angry
+    - type: portrait
+      name: elaine_confident
+    - type: portrait
+      name: voodoo_lady_mysterious

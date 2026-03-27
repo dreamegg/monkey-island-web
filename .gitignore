@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+.venv/
+
+# Build output
+dist/
+dist-ssr/
+
+# Vite cache
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Local env
+.env
+.env.local
+
+# OMC internal state
+.omc/state/
+.omc/sessions/
+
+# Archives
+*.tar.gz
+*.zip
+
+# Logs
+*.log
+npm-debug.log*

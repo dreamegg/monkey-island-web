@@ -1,0 +1,22 @@
+{
+  "name": "bartender",
+  "type": "character",
+  "seed": 2005,
+  "prompt": "gruff pirate bartender, stocky build, bald head with red bandana, brown leather apron over striped shirt, thick arms, handlebar mustache, suspicious expression, holding a rag, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character sprite, side view walking pose, lucasarts adventure game style, transparent background, clean pixel edges, single character, centered",
+  "negative": "3d, realistic, blurry, background scene, multiple characters, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    384
+  ],
+  "target_size": [
+    32,
+    48
+  ],
+  "display_size": [
+    64,
+    96
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 311.09
+}

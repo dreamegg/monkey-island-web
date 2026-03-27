@@ -1,0 +1,22 @@
+{
+  "name": "bottle_icon",
+  "type": "inventory",
+  "seed": 4005,
+  "prompt": "tiny pixel art rum bottle icon, dark green bottle shape, cork visible, readable at small size, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art inventory icon, tiny game icon, very small sprite, transparent background, clear readable silhouette, adventure game",
+  "negative": "3d, realistic, blurry, background, character, person, anti-aliased, text, watermark, complex details",
+  "gen_size": [
+    192,
+    192
+  ],
+  "target_size": [
+    24,
+    24
+  ],
+  "display_size": [
+    48,
+    48
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 273.08
+}

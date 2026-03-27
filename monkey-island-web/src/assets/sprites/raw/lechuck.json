@@ -1,0 +1,22 @@
+{
+  "name": "lechuck",
+  "type": "character",
+  "seed": 2002,
+  "prompt": "ghost pirate captain, glowing ethereal blue-green aura, large tattered pirate captain coat with gold buttons, massive black beard made of shadow and smoke, glowing red menacing eyes, undead skeletal hands, imposing tall figure, dramatic ghostly trail, transparent background, single character centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character sprite, side view walking pose, lucasarts adventure game style, transparent background, clean pixel edges, single character, centered",
+  "negative": "3d, realistic, blurry, background scene, multiple characters, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    384
+  ],
+  "target_size": [
+    32,
+    48
+  ],
+  "display_size": [
+    64,
+    96
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 303.68
+}

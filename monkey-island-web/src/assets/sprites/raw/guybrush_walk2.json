@@ -1,0 +1,22 @@
+{
+  "name": "guybrush_walk2",
+  "type": "character",
+  "seed": 2102,
+  "prompt": "young lanky blonde pirate hero, wearing red long-sleeved shirt, blue baggy pants, brown leather boots, transparent white background, single character centered, full body visible, side view facing right, walking pose legs together passing position, arms at center, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character sprite, side view walking pose, lucasarts adventure game style, transparent background, clean pixel edges, single character, centered",
+  "negative": "3d, realistic, blurry, background scene, multiple characters, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    384
+  ],
+  "target_size": [
+    32,
+    48
+  ],
+  "display_size": [
+    64,
+    96
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 296.98
+}

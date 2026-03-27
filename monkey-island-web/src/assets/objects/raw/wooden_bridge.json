@@ -1,0 +1,22 @@
+{
+  "name": "wooden_bridge",
+  "type": "object",
+  "seed": 3203,
+  "prompt": "rickety wooden rope bridge section, worn plank boards with gaps, frayed rope sides, mossy and weathered, tropical forest style, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art game object, inventory item style, transparent background, clean pixel edges, centered, adventure game prop",
+  "negative": "3d, realistic, blurry, background, character, person, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    256
+  ],
+  "target_size": [
+    32,
+    32
+  ],
+  "display_size": [
+    64,
+    64
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 264.81
+}

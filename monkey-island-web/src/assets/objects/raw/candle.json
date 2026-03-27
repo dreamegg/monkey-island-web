@@ -1,0 +1,22 @@
+{
+  "name": "candle",
+  "type": "object",
+  "seed": 3104,
+  "prompt": "melted white candle in brass holder, dripping wax, small flickering flame, wax pooled at base, warm golden light glow, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art game object, inventory item style, transparent background, clean pixel edges, centered, adventure game prop",
+  "negative": "3d, realistic, blurry, background, character, person, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    256
+  ],
+  "target_size": [
+    32,
+    32
+  ],
+  "display_size": [
+    64,
+    64
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 250.72
+}

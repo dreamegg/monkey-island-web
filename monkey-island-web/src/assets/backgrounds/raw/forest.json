@@ -1,0 +1,22 @@
+{
+  "name": "forest",
+  "type": "background",
+  "seed": 1003,
+  "prompt": "dense tropical jungle path at night, tall palm trees and exotic foliage forming a canopy, mysterious fireflies, ancient stone ruins visible through trees, winding dirt path leading deeper into forest, giant mushrooms glowing softly, twisted roots across the path, eerie green mist near ground, glimpse of starry sky through tree gaps, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art background scene, 16-bit point-and-click adventure game, lucasarts monkey island style, EGA color palette, atmospheric, detailed, no characters, no text, no UI",
+  "negative": "3d, realistic, photograph, blurry, anti-aliased, modern, characters, people, text, watermark, UI, HUD, smooth gradients",
+  "gen_size": [
+    320,
+    208
+  ],
+  "target_size": [
+    320,
+    200
+  ],
+  "display_size": [
+    640,
+    400
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 301.82
+}

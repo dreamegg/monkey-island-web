@@ -1,0 +1,22 @@
+{
+  "name": "voodoo_lady",
+  "type": "character",
+  "seed": 2004,
+  "prompt": "mysterious old voodoo woman, dark wrinkled skin, wild grey hair with colorful beads and bones woven in, flowing purple and black robes with voodoo symbols, necklace of bones and feathers, wise piercing eyes, hunched slightly but powerful presence, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character sprite, side view walking pose, lucasarts adventure game style, transparent background, clean pixel edges, single character, centered",
+  "negative": "3d, realistic, blurry, background scene, multiple characters, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    384
+  ],
+  "target_size": [
+    32,
+    48
+  ],
+  "display_size": [
+    64,
+    96
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 279.6
+}

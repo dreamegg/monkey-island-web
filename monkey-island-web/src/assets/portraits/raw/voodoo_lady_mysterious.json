@@ -1,0 +1,22 @@
+{
+  "name": "voodoo_lady_mysterious",
+  "type": "portrait",
+  "seed": 5301,
+  "prompt": "close-up portrait of old voodoo woman, deeply wrinkled dark face, wild grey hair with colorful beads, one eye squinting wisely, mysterious knowing smile, bone necklace visible, eerie candle glow lighting from below, dialogue portrait, facing right, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character portrait, close-up face, dialogue box style, lucasarts adventure game, expressive face, bust shot",
+  "negative": "3d, realistic, blurry, full body, background scene, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    256
+  ],
+  "target_size": [
+    64,
+    64
+  ],
+  "display_size": [
+    128,
+    128
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 295.19
+}

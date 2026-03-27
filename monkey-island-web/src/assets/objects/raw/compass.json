@@ -1,0 +1,22 @@
+{
+  "name": "compass",
+  "type": "object",
+  "seed": 3504,
+  "prompt": "old brass nautical compass, round case with glass face, ornate N-S-E-W markings, red magnetic needle pointing north, worn engraving on case, transparent background, centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art game object, inventory item style, transparent background, clean pixel edges, centered, adventure game prop",
+  "negative": "3d, realistic, blurry, background, character, person, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    256
+  ],
+  "target_size": [
+    32,
+    32
+  ],
+  "display_size": [
+    64,
+    64
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 260.0
+}

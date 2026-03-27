@@ -1,0 +1,22 @@
+{
+  "name": "beach",
+  "type": "background",
+  "seed": 1004,
+  "prompt": "tropical beach at night with white sand and lapping ocean waves, three tall palm trees leaning over beach, large skull-shaped rock formation on right side, crackling pirate campfire with embers, moonlit ocean stretching to horizon, dark cave entrance in cliff face on left, small beach crabs, seashells and driftwood on sand, starry sky with large tropical moon, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art background scene, 16-bit point-and-click adventure game, lucasarts monkey island style, EGA color palette, atmospheric, detailed, no characters, no text, no UI",
+  "negative": "3d, realistic, photograph, blurry, anti-aliased, modern, characters, people, text, watermark, UI, HUD, smooth gradients",
+  "gen_size": [
+    320,
+    208
+  ],
+  "target_size": [
+    320,
+    200
+  ],
+  "display_size": [
+    640,
+    400
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 293.5
+}

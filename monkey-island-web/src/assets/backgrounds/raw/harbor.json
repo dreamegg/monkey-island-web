@@ -1,0 +1,22 @@
+{
+  "name": "harbor",
+  "type": "background",
+  "seed": 1001,
+  "prompt": "pirate harbor at dusk, weathered wooden dock extending into calm dark water, tall sailing ship with skull flag anchored nearby, flickering torch lights on dock posts, moonlight reflecting on water ripples, barrels and crates stacked on dock, distant island silhouette, atmospheric fog near water surface, dramatic sky with clouds and stars emerging, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art background scene, 16-bit point-and-click adventure game, lucasarts monkey island style, EGA color palette, atmospheric, detailed, no characters, no text, no UI",
+  "negative": "3d, realistic, photograph, blurry, anti-aliased, modern, characters, people, text, watermark, UI, HUD, smooth gradients",
+  "gen_size": [
+    320,
+    208
+  ],
+  "target_size": [
+    320,
+    200
+  ],
+  "display_size": [
+    640,
+    400
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 322.52
+}

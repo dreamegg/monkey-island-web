@@ -1,0 +1,135 @@
+{
+  "id": "harbor",
+  "name": "항구",
+  "walkArea": { "x1": 0.03, "y1": 0.58, "x2": 0.78, "y2": 0.82 },
+  "objects": [
+    {
+      "id": "sign",
+      "name": "낡은 간판",
+      "x": 0.28,
+      "y": 0.52,
+      "w": 50,
+      "h": 20,
+      "actions": {
+        "look": "바래진 글씨가 적힌 항구 간판이다. '멜레 항구에 오신 것을 환영합니다'",
+        "read": [
+          { "cmd": "say", "text": "'멜레 항구 - 해적 지망생 환영!' 이라고 쓰여있다." },
+          { "cmd": "set_flag", "flag": "read_sign", "value": true }
+        ],
+        "pick_up": "간판이 땅에 단단히 박혀있다. 뽑을 수 없다."
+      }
+    },
+    {
+      "id": "barrel",
+      "name": "나무 통",
+      "x": 0.42,
+      "y": 0.6,
+      "w": 24,
+      "h": 28,
+      "actions": {
+        "look": "오래된 럼주 통이다. 아직 냄새가 진하게 난다.",
+        "open": [
+          { "cmd": "say", "text": "뚜껑을 열어보니... 거미 한 마리가 튀어나왔다!" },
+          { "cmd": "set_flag", "flag": "barrel_opened", "value": true }
+        ],
+        "pick_up": "너무 무거워서 들 수 없다."
+      },
+      "item": { "id": "grog", "name": "그로그 맥주", "icon": "🍺" }
+    },
+    {
+      "id": "ship",
+      "name": "해적선",
+      "x": 0.68,
+      "y": 0.18,
+      "w": 80,
+      "h": 50,
+      "actions": {
+        "look": "멀리서 해적선이 정박해 있다. 돛에 해골 마크가 보인다.",
+        "use": [
+          {
+            "cmd": "if",
+            "flag": "has_boat",
+            "then": [{ "cmd": "say", "text": "배를 향해 노를 저어간다..." }],
+            "else": [{ "cmd": "say", "text": "배까지 갈 수 없다. 보트가 필요하다." }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "anchor",
+      "name": "닻",
+      "x": 0.55,
+      "y": 0.62,
+      "w": 12,
+      "h": 24,
+      "actions": {
+        "look": "무거운 철제 닻이다. 녹이 잔뜩 슬어있다.",
+        "pick_up": "너무 무겁다! 들 수 없다.",
+        "use": [
+          {
+            "cmd": "if",
+            "flag": "has_rope",
+            "then": [
+              { "cmd": "say", "text": "밧줄을 닻에 연결했다!" },
+              { "cmd": "set_flag", "flag": "anchor_rigged", "value": true }
+            ],
+            "else": [{ "cmd": "say", "text": "밧줄이 있으면 뭔가 할 수 있을 것 같은데..." }]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rope_coil",
+      "name": "밧줄 뭉치",
+      "x": 0.5,
+      "y": 0.63,
+      "w": 16,
+      "h": 16,
+      "actions": {
+        "look": "튼튼해 보이는 밧줄 뭉치다.",
+        "pick_up": [
+          { "cmd": "give_item", "id": "rope", "name": "밧줄", "icon": "🪢" },
+          { "cmd": "set_flag", "flag": "has_rope", "value": true }
+        ],
+        "use": "뭔가에 묶어야 할 것 같다."
+      },
+      "item": { "id": "rope", "name": "밧줄", "icon": "🪢" }
+    }
+  ],
+  "exits": [
+    {
+      "id": "tavern_door",
+      "name": "선술집",
+      "to": "tavern",
+      "x": 0.0,
+      "y": 0.45,
+      "w": 30,
+      "h": 140,
+      "walkTo": { "x": 0.05, "y": 0.65 }
+    },
+    {
+      "id": "forest_path",
+      "name": "숲으로 가는 길",
+      "to": "forest",
+      "x": 0.75,
+      "y": 0.58,
+      "w": 40,
+      "h": 100,
+      "walkTo": { "x": 0.73, "y": 0.68 }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "three_pirates",
+      "name": "세 해적",
+      "x": 0.35,
+      "y": 0.65,
+      "sprite": "lechuck",
+      "dialogue": "three_pirates",
+      "actions": {
+        "look": "부두에 앉아 술을 마시고 있는 세 명의 해적이다.",
+        "talk": ""
+      }
+    }
+  ]
+}

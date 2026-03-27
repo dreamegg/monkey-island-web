@@ -1,0 +1,22 @@
+{
+  "name": "lechuck_angry",
+  "type": "portrait",
+  "seed": 5101,
+  "prompt": "close-up portrait of ghost pirate captain, menacing glowing red eyes, massive black smoky beard, tattered captain hat, ethereal blue glow around face, furious expression, scary undead appearance, dialogue portrait, facing left, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character portrait, close-up face, dialogue box style, lucasarts adventure game, expressive face, bust shot",
+  "negative": "3d, realistic, blurry, full body, background scene, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    256
+  ],
+  "target_size": [
+    64,
+    64
+  ],
+  "display_size": [
+    128,
+    128
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 307.57
+}

@@ -1,0 +1,22 @@
+{
+  "name": "elaine",
+  "type": "character",
+  "seed": 2003,
+  "prompt": "confident female governor, flowing auburn-brown hair, elegant but practical dress in deep blue with gold trim, determined confident pose, cape flowing behind, boots, beautiful but no-nonsense expression, transparent background, single character centered, pixel art, 16-bit era, lucasarts point-and-click adventure game style, EGA palette, crisp pixels, no anti-aliasing, retro game aesthetic, monkey island inspired, pixel art character sprite, side view walking pose, lucasarts adventure game style, transparent background, clean pixel edges, single character, centered",
+  "negative": "3d, realistic, blurry, background scene, multiple characters, anti-aliased, text, watermark, modern style",
+  "gen_size": [
+    256,
+    384
+  ],
+  "target_size": [
+    32,
+    48
+  ],
+  "display_size": [
+    64,
+    96
+  ],
+  "img2img": null,
+  "img2img_strength": null,
+  "elapsed_s": 301.01
+}
