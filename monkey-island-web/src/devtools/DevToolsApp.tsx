@@ -18,7 +18,7 @@ import {
   hasDepthConfig,
 } from '../engine/DepthSystem';
 import type { RoomDepthConfig } from '../engine/DepthSystem';
-import { preloadAllBackgrounds, getImage } from '../utils/assetLoader';
+import { preloadAllBackgrounds, getImage, loadImage } from '../utils/assetLoader';
 import { ap } from '../utils/paths';
 
 // ── Styles ──────────────────────────────────────────────────
@@ -116,6 +116,7 @@ export default function DevToolsApp() {
     preloadAllBackgrounds();
     const roomIds = Object.keys(ROOMS);
     preloadAllDepthConfigs(roomIds).then(() => setReady(true));
+    roomIds.forEach((id) => loadImage(ap(`/room-configs/${id}_depth.png`)).catch(() => {}));
   }, []);
 
   const tabs: { id: TabId; label: string }[] = [
@@ -168,8 +169,15 @@ function RoomEditorPanel() {
     scalePreview: true,
     grid: false,
   });
+  const [selectedItem, setSelectedItem] = useState<{ type: 'object' | 'exit' | 'npc'; id: string } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const room = ROOMS[selectedRoom];
+
+  useEffect(() => { setSelectedItem(null); }, [selectedRoom]);
+
+  useEffect(() => {
+    loadImage(ap(`/room-configs/${selectedRoom}_depth.png`)).catch(() => {});
+  }, [selectedRoom]);
 
   const toggleOverlay = (key: keyof typeof overlays) =>
     setOverlays((o) => ({ ...o, [key]: !o[key] }));
@@ -318,7 +326,47 @@ function RoomEditorPanel() {
         }
       }
     }
-  }, [selectedRoom, overlays, room]);
+    // Depth map heatmap overlay
+    if (overlays.depthMap) {
+      const depthImg = getImage(ap(`/room-configs/${selectedRoom}_depth.png`));
+      if (depthImg) {
+        const off = document.createElement('canvas');
+        off.width = CANVAS_W;
+        off.height = CANVAS_H;
+        const offCtx = off.getContext('2d')!;
+        offCtx.drawImage(depthImg, 0, 0, CANVAS_W, CANVAS_H);
+        const imgData = offCtx.getImageData(0, 0, CANVAS_W, CANVAS_H);
+        const d = imgData.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const v = d[i]; // 0=far(dark), 255=near(bright)
+          d[i]     = Math.min(255, v * 2);           // R: high near
+          d[i + 1] = v > 127 ? (255 - v) * 2 : v * 2; // G: peak at mid
+          d[i + 2] = Math.max(0, 255 - v * 2);       // B: high far
+          d[i + 3] = 140;                             // alpha ~55%
+        }
+        offCtx.putImageData(imgData, 0, 0);
+        ctx.drawImage(off, 0, 0);
+      }
+    }
+
+    // Selected item highlight (bright animated-style border)
+    if (selectedItem) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([6, 3]);
+      if (selectedItem.type === 'object') {
+        const obj = room.objects.find((o) => o.id === selectedItem.id);
+        if (obj) ctx.strokeRect(obj.x * CANVAS_W - 3, obj.y * CANVAS_H - 3, obj.w + 6, obj.h + 6);
+      } else if (selectedItem.type === 'exit') {
+        const exit = room.exits.find((e) => e.id === selectedItem.id);
+        if (exit) ctx.strokeRect(exit.x * CANVAS_W - 3, exit.y * CANVAS_H - 3, exit.w + 6, exit.h + 6);
+      } else if (selectedItem.type === 'npc') {
+        const npc = room.npcs?.find((n) => n.id === selectedItem.id);
+        if (npc) ctx.strokeRect(npc.x * CANVAS_W - 23, npc.y * CANVAS_H - 83, 46, 96);
+      }
+      ctx.setLineDash([]);
+    }
+  }, [selectedRoom, overlays, room, selectedItem]);
 
   // Show mouse position on canvas
   const [mousePos, setMousePos] = useState<{ nx: number; ny: number } | null>(null);
@@ -330,6 +378,42 @@ function RoomEditorPanel() {
     const ny = (e.clientY - rect.top) / rect.height;
     setMousePos({ nx, ny });
   }, []);
+
+  const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas || !room) return;
+    const rect = canvas.getBoundingClientRect();
+    const cx = ((e.clientX - rect.left) / rect.width) * CANVAS_W;
+    const cy = ((e.clientY - rect.top) / rect.height) * CANVAS_H;
+
+    // NPCs first (priority)
+    if (room.npcs) {
+      for (const npc of room.npcs) {
+        if (cx >= npc.x * CANVAS_W - 20 && cx <= npc.x * CANVAS_W + 20 &&
+            cy >= npc.y * CANVAS_H - 80 && cy <= npc.y * CANVAS_H + 10) {
+          setSelectedItem({ type: 'npc', id: npc.id });
+          return;
+        }
+      }
+    }
+    // Objects
+    for (const obj of room.objects) {
+      if (cx >= obj.x * CANVAS_W && cx <= obj.x * CANVAS_W + obj.w &&
+          cy >= obj.y * CANVAS_H && cy <= obj.y * CANVAS_H + obj.h) {
+        setSelectedItem({ type: 'object', id: obj.id });
+        return;
+      }
+    }
+    // Exits
+    for (const exit of room.exits) {
+      if (cx >= exit.x * CANVAS_W && cx <= exit.x * CANVAS_W + exit.w &&
+          cy >= exit.y * CANVAS_H && cy <= exit.y * CANVAS_H + exit.h) {
+        setSelectedItem({ type: 'exit', id: exit.id });
+        return;
+      }
+    }
+    setSelectedItem(null);
+  }, [room]);
 
   const depthConfig = getRoomConfig(selectedRoom);
 
@@ -367,6 +451,7 @@ function RoomEditorPanel() {
             height={CANVAS_H}
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setMousePos(null)}
+            onClick={handleCanvasClick}
             style={{
               width: '100%',
               imageRendering: 'pixelated',
@@ -384,6 +469,9 @@ function RoomEditorPanel() {
               )}
             </div>
           )}
+          <div style={{ marginTop: 4, fontSize: 11, color: '#555', fontFamily: 'monospace' }}>
+            Click object/exit/NPC to inspect
+          </div>
         </div>
 
         {/* Room details */}
@@ -446,6 +534,64 @@ function RoomEditorPanel() {
               ))}
             </div>
           )}
+
+          {/* Selected item details */}
+          {selectedItem && (() => {
+            if (selectedItem.type === 'object') {
+              const obj = room?.objects.find((o) => o.id === selectedItem.id);
+              if (!obj) return null;
+              return (
+                <div style={S.panel}>
+                  <div style={S.panelTitle}>Selected: {obj.name}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 12, lineHeight: 1.8 }}>
+                    <div>id: <b>{obj.id}</b></div>
+                    <div>pos: <b>({obj.x.toFixed(3)}, {obj.y.toFixed(3)})</b></div>
+                    <div>size: <b>{obj.w} × {obj.h} px</b></div>
+                    {obj.item && <div>item: <b>{obj.item.icon} {obj.item.name}</b></div>}
+                    <div style={{ marginTop: 8 }}>Actions:</div>
+                    {Object.entries(obj.actions).map(([verb, script]) => (
+                      <div key={verb} style={{ marginLeft: 12, color: '#888' }}>
+                        <span style={{ color: PALETTE.uiVerbActive }}>{verb}</span>:{' '}
+                        {typeof script === 'string' ? script.slice(0, 60) : `[${(script as object[]).length} cmds]`}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            if (selectedItem.type === 'exit') {
+              const exit = room?.exits.find((e) => e.id === selectedItem.id);
+              if (!exit) return null;
+              return (
+                <div style={S.panel}>
+                  <div style={S.panelTitle}>Selected: {exit.name}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 12, lineHeight: 1.8 }}>
+                    <div>id: <b>{exit.id}</b></div>
+                    <div>to: <b>{exit.to}</b></div>
+                    <div>pos: <b>({exit.x.toFixed(3)}, {exit.y.toFixed(3)})</b></div>
+                    <div>size: <b>{exit.w} × {exit.h} px</b></div>
+                    <div>walkTo: <b>({exit.walkTo.x.toFixed(3)}, {exit.walkTo.y.toFixed(3)})</b></div>
+                  </div>
+                </div>
+              );
+            }
+            if (selectedItem.type === 'npc') {
+              const npc = room?.npcs?.find((n) => n.id === selectedItem.id);
+              if (!npc) return null;
+              return (
+                <div style={S.panel}>
+                  <div style={S.panelTitle}>Selected: {npc.name}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 12, lineHeight: 1.8 }}>
+                    <div>id: <b>{npc.id}</b></div>
+                    <div>pos: <b>({npc.x.toFixed(3)}, {npc.y.toFixed(3)})</b></div>
+                    <div>sprite: <b>{npc.sprite}</b></div>
+                    <div>dialogue: <b>{npc.dialogue}</b></div>
+                  </div>
+                </div>
+              );
+            }
+            return null;
+          })()}
         </div>
       </div>
     </>
