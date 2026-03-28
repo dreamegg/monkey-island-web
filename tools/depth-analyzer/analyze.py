@@ -188,7 +188,10 @@ def save_debug_image(
     cv2.imwrite(output_path, overlay)
 
 
-def analyze_room(pipe, image_path: str, room_id: str, output_dir: Path) -> dict:
+def analyze_room(
+    pipe, image_path: str, room_id: str, output_dir: Path,
+    with_segmentation: bool = False, device: str = "cuda",
+) -> dict:
     """Full analysis pipeline for one room background."""
     print(f"\n{'='*50}")
     print(f"  Analyzing: {room_id}")
@@ -235,6 +238,15 @@ def analyze_room(pipe, image_path: str, room_id: str, output_dir: Path) -> dict:
         json.dump(config, f, indent=2, ensure_ascii=False)
     print(f"  Saved: {config_path.name}")
 
+    # Optional segmentation pass
+    if with_segmentation:
+        try:
+            from segment import load_seg_model, segment_room
+            seg_pipe = load_seg_model(device)
+            segment_room(seg_pipe, image_path, room_id, output_dir, depth)
+        except Exception as e:
+            print(f"  [warn] Segmentation failed: {e}")
+
     return config
 
 
@@ -263,6 +275,11 @@ def main():
         choices=["cuda", "cpu", "mps"],
         help="Inference device (default: cuda)",
     )
+    parser.add_argument(
+        "--with-segmentation",
+        action="store_true",
+        help="Also run semantic segmentation after depth analysis",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output)
@@ -280,7 +297,9 @@ def main():
         configs = []
         for img_path in images:
             rid = img_path.stem
-            cfg = analyze_room(pipe, str(img_path), rid, output_dir)
+            cfg = analyze_room(pipe, str(img_path), rid, output_dir,
+                               with_segmentation=args.with_segmentation,
+                               device=args.device)
             configs.append(cfg)
 
         # Combined index file
@@ -292,7 +311,9 @@ def main():
 
     elif args.image:
         rid = args.room_id or Path(args.image).stem
-        analyze_room(pipe, args.image, rid, output_dir)
+        analyze_room(pipe, args.image, rid, output_dir,
+                     with_segmentation=args.with_segmentation,
+                     device=args.device)
         print("\nDone.")
 
     else:

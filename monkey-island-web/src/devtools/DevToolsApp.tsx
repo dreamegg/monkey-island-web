@@ -18,6 +18,11 @@ import {
   hasDepthConfig,
 } from '../engine/DepthSystem';
 import type { RoomDepthConfig } from '../engine/DepthSystem';
+import {
+  preloadAllSegmentation,
+  getSegmentation,
+  getObjectCandidates,
+} from '../engine/SegmentationSystem';
 import { preloadAllBackgrounds, getImage, loadImage } from '../utils/assetLoader';
 import { ap } from '../utils/paths';
 
@@ -116,6 +121,7 @@ export default function DevToolsApp() {
     preloadAllBackgrounds();
     const roomIds = Object.keys(ROOMS);
     preloadAllDepthConfigs(roomIds).then(() => setReady(true));
+    preloadAllSegmentation(roomIds);
     roomIds.forEach((id) => loadImage(ap(`/room-configs/${id}_depth.png`)).catch(() => {}));
   }, []);
 
@@ -166,6 +172,7 @@ function RoomEditorPanel() {
     exits: true,
     npcs: true,
     depthMap: false,
+    segmentation: false,
     scalePreview: true,
     grid: false,
   });
@@ -349,6 +356,48 @@ function RoomEditorPanel() {
       }
     }
 
+    // Segmentation overlay — floor polygon (teal) + object bboxes (orange)
+    if (overlays.segmentation) {
+      const seg = getSegmentation(selectedRoom);
+      if (seg) {
+        // Floor polygon — teal fill + outline
+        if (seg.floorPolygon.length >= 3) {
+          const pts = seg.floorPolygon.map(([nx, ny]) => [nx * CANVAS_W, ny * CANVAS_H] as [number, number]);
+          ctx.beginPath();
+          ctx.moveTo(pts[0][0], pts[0][1]);
+          pts.slice(1).forEach(([px, py]) => ctx.lineTo(px, py));
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(0, 220, 200, 0.25)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(0, 220, 200, 0.9)';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([6, 3]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Object candidates — orange bounding boxes
+        const objColors = ['#ff8c00', '#ff5050', '#ffc800', '#b4ff00', '#ff00cc', '#00ccff'];
+        seg.objects.slice(0, 12).forEach((obj, i) => {
+          const b = obj.bbox;
+          if (!b) return;
+          const x = b.x * CANVAS_W, y = b.y * CANVAS_H;
+          const w = b.w * CANVAS_W, h = b.h * CANVAS_H;
+          const color = objColors[i % objColors.length];
+          const alpha = obj.confidence >= 0.5 ? 'cc' : '66';
+          ctx.strokeStyle = color + alpha;
+          ctx.lineWidth = obj.confidence >= 0.5 ? 2 : 1;
+          ctx.strokeRect(x, y, w, h);
+          ctx.fillStyle = color + '33';
+          ctx.fillRect(x, y, w, h);
+          // Label
+          ctx.fillStyle = color;
+          ctx.font = '11px monospace';
+          ctx.fillText(`${obj.label} ${obj.confidence.toFixed(2)}`, x + 2, y - 3 < 10 ? y + 12 : y - 3);
+        });
+      }
+    }
+
     // Selected item highlight (bright animated-style border)
     if (selectedItem) {
       ctx.strokeStyle = '#fff';
@@ -366,7 +415,7 @@ function RoomEditorPanel() {
       }
       ctx.setLineDash([]);
     }
-  }, [selectedRoom, overlays, room, selectedItem]);
+  }, [selectedRoom, overlays, room, selectedItem]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   // Show mouse position on canvas
   const [mousePos, setMousePos] = useState<{ nx: number; ny: number } | null>(null);
@@ -534,6 +583,52 @@ function RoomEditorPanel() {
               ))}
             </div>
           )}
+
+          {/* Segmentation candidates */}
+          {(() => {
+            const seg = getSegmentation(selectedRoom);
+            if (!seg) return null;
+            const objs = getObjectCandidates(selectedRoom);
+            return (
+              <div style={S.panel}>
+                <div style={S.panelTitle}>
+                  Segmentation
+                  <span style={{ color: '#555', fontWeight: 400, marginLeft: 8, fontSize: 12 }}>
+                    {seg.stats.floor}f / {seg.stats.object}obj / {seg.stats.background}bg / {seg.stats.discarded}disc
+                  </span>
+                </div>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 8 }}>
+                  Floor polygon: {seg.floorPolygon.length} vertices
+                  {' | '}generated {seg.generatedAt.slice(0, 10)}
+                </div>
+                <div style={{ maxHeight: 220, overflow: 'auto' }}>
+                  {objs.slice(0, 10).map((obj) => (
+                    <div key={obj.segmentId}
+                      style={{ padding: '4px 0', fontSize: 12, borderBottom: '1px solid #2a2a3e', display: 'flex', gap: 8, alignItems: 'baseline' }}>
+                      <span style={{
+                        ...S.badge(obj.confidence >= 0.5 ? '#ff8c00' : '#555'),
+                        minWidth: 36, textAlign: 'center',
+                      }}>
+                        {obj.confidence.toFixed(2)}
+                      </span>
+                      <b style={{ color: '#ddd' }}>{obj.label}</b>
+                      <span style={{ color: '#888', fontSize: 11 }}>
+                        {obj.areaPct.toFixed(1)}% | depth {obj.meanDepth.toFixed(2)} | Δ{obj.depthContrast.toFixed(2)}
+                      </span>
+                      <span style={{ color: '#555', fontSize: 11, marginLeft: 'auto' }}>
+                        ({obj.centroid.x.toFixed(2)}, {obj.centroid.y.toFixed(2)})
+                      </span>
+                    </div>
+                  ))}
+                  {objs.length === 0 && (
+                    <div style={{ color: '#666', fontSize: 12 }}>
+                      No object candidates. Run <code>segment.py</code> to generate.
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Selected item details */}
           {selectedItem && (() => {
