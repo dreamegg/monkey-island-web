@@ -1,0 +1,305 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774570079923,
+  "projectRoot": "/home/ckmoon/local_works/monkey_i/monkey-island-web",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "react",
+        "version": "18.3.0",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "18.3.0",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "5.4.0",
+        "category": "build"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc && vite build",
+      "preview": "vite preview",
+      "deploy": "vite build && gh-pages -d dist",
+      "deploy:cf": "vite build && wrangler pages deploy dist"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 2,
+      "lastAccessed": 1774570079915,
+      "keyFiles": [
+        "devtools.html",
+        "index.html"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 1,
+      "lastAccessed": 1774570079915,
+      "keyFiles": [
+        "PRD.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 0,
+      "lastAccessed": 1774570079920,
+      "keyFiles": []
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 2,
+      "lastAccessed": 1774570079921,
+      "keyFiles": [
+        "App.tsx",
+        "main.tsx"
+      ]
+    },
+    "tools": {
+      "path": "tools",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774570079921,
+      "keyFiles": []
+    },
+    "dist/assets": {
+      "path": "dist/assets",
+      "purpose": "Static assets",
+      "fileCount": 3,
+      "lastAccessed": 1774570079921,
+      "keyFiles": [
+        "devtools-CwyKPqNH.js",
+        "dialogues-DVZMK43_.js",
+        "main-CzJw-QOB.js"
+      ]
+    },
+    "public/assets": {
+      "path": "public/assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1774570079922,
+      "keyFiles": []
+    },
+    "src/assets": {
+      "path": "src/assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1774570079922,
+      "keyFiles": []
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 6,
+      "lastAccessed": 1774570079922,
+      "keyFiles": [
+        "DialogueBox.tsx",
+        "GameCanvas.tsx",
+        "IntroScene.tsx"
+      ]
+    },
+    "src/data": {
+      "path": "src/data",
+      "purpose": "Data files",
+      "fileCount": 2,
+      "lastAccessed": 1774570079922,
+      "keyFiles": [
+        "dialogues.ts",
+        "rooms.ts"
+      ]
+    },
+    "src/utils": {
+      "path": "src/utils",
+      "purpose": "Utility functions",
+      "fileCount": 4,
+      "lastAccessed": 1774570079922,
+      "keyFiles": [
+        "assetLoader.ts",
+        "audioManager.ts",
+        "canvas.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src/devtools/DevToolsApp.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1774624425955,
+      "type": "file"
+    },
+    {
+      "path": "src/data/rooms.ts",
+      "accessCount": 5,
+      "lastAccessed": 1774574246142,
+      "type": "file"
+    },
+    {
+      "path": "src/App.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1774624406558,
+      "type": "file"
+    },
+    {
+      "path": "src/components/GameCanvas.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1774624438148,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 2,
+      "lastAccessed": 1774574229499,
+      "type": "directory"
+    },
+    {
+      "path": "src/engine/types.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774574277116,
+      "type": "file"
+    },
+    {
+      "path": "src/engine/GameEngine.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774574277584,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 2,
+      "lastAccessed": 1774624414149,
+      "type": "directory"
+    },
+    {
+      "path": "tsconfig.json",
+      "accessCount": 2,
+      "lastAccessed": 1774624467024,
+      "type": "file"
+    },
+    {
+      "path": "src/utils/assetLoader.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774570098177,
+      "type": "directory"
+    },
+    {
+      "path": "public/assets/backgrounds/harbor.png",
+      "accessCount": 1,
+      "lastAccessed": 1774570111976,
+      "type": "file"
+    },
+    {
+      "path": "public/assets/backgrounds/tavern.png",
+      "accessCount": 1,
+      "lastAccessed": 1774570112469,
+      "type": "file"
+    },
+    {
+      "path": "public/assets/backgrounds/forest.png",
+      "accessCount": 1,
+      "lastAccessed": 1774570112847,
+      "type": "file"
+    },
+    {
+      "path": "public/assets/backgrounds/beach.png",
+      "accessCount": 1,
+      "lastAccessed": 1774570113251,
+      "type": "file"
+    },
+    {
+      "path": "public/assets/backgrounds/cave.png",
+      "accessCount": 1,
+      "lastAccessed": 1774570113452,
+      "type": "file"
+    },
+    {
+      "path": "src/engine/SceneManager.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774574237842,
+      "type": "file"
+    },
+    {
+      "path": "src/engine/CanvasRenderer.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774574238109,
+      "type": "file"
+    },
+    {
+      "path": "src/engine/VerbSystem.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774574277844,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1774624356451,
+      "type": "file"
+    },
+    {
+      "path": "vite.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774624377243,
+      "type": "file"
+    },
+    {
+      "path": "src/engine/RoomLoader.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774624397313,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
