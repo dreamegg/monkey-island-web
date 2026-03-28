@@ -6,6 +6,7 @@ import { preloadAllBackgrounds } from './utils/assetLoader';
 import { preloadCharacterSprites } from './utils/spriteAnimator';
 import { playRoomMusic, playIntroMusic, stopMusic } from './utils/audioManager';
 import { initDialogues } from './data/dialogues';
+import { preloadJsonDialogues } from './engine/DialogueLoader';
 import { preloadAllDepthConfigs } from './engine/DepthSystem';
 import GameCanvas from './components/GameCanvas';
 import VerbPanel from './components/VerbPanel';
@@ -23,6 +24,7 @@ export default function App() {
     initDialogues();
     preloadAllDepthConfigs(['harbor', 'tavern', 'forest', 'beach', 'cave']);
     preloadJsonRooms(['harbor', 'tavern', 'forest', 'beach', 'cave']);
+    preloadJsonDialogues(['harbor', 'tavern', 'forest', 'beach', 'cave']);
   }, []);
 
   // Play intro music when showing intro scene
