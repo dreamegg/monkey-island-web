@@ -1,0 +1,201 @@
+# =============================================================================
+# Character Identity Definitions
+# Used by generate_characters.py for consistent multi-variant generation.
+#
+# Each character has:
+#   identity:   The canonical physical description (clothes, hair, face structure).
+#               This text is used UNCHANGED for every variant so the model anchors
+#               to the same appearance via img2img.
+#   base_seed:  Seed for the canonical base image generation (txt2img, phase 1).
+#   portraits:  Expression variants. Only the `expression` field changes.
+#   sprites:    Pose variants for walk cycle. Only the `pose` field changes.
+#
+# img2img strengths:
+#   portrait variants:  0.50  (face shape preserved, expression can shift)
+#   sprite walk frames: 0.65  (body proportions preserved, pose can shift)
+# =============================================================================
+
+characters:
+  guybrush:
+    identity: >-
+      young lanky male pirate hero, medium-length untidy blonde hair,
+      bright sky-blue eyes, long slightly pointed nose, narrow face,
+      friendly jawline, wearing a red long-sleeved shirt with white collar,
+      blue-gray baggy pants cinched with a small brown belt,
+      brown leather ankle boots, slight build, expressive eyebrows
+    base_seed: 5000
+    facing: right
+
+    portraits:
+      neutral:
+        expression: "friendly open expression, relaxed gentle smile, eyes looking slightly right, calm"
+        output: guybrush_neutral
+        seed: 5001
+      surprised:
+        expression: "wide shocked eyes, mouth hanging open in an O, eyebrows raised as high as possible, startled"
+        output: guybrush_surprised
+        seed: 5002
+      determined:
+        expression: "focused narrowed eyes, jaw firmly set, lips pressed together, intense confident stare"
+        output: guybrush_determined
+        seed: 5003
+      happy:
+        expression: "big wide grin showing teeth, crinkled eyes, eyebrows raised with joy, delighted"
+        output: guybrush_happy
+        seed: 5004
+      worried:
+        expression: "furrowed brow, eyes darting, lips pressed nervously, anxious expression"
+        output: guybrush_worried
+        seed: 5005
+
+    sprites:
+      idle:
+        pose: "standing relaxed, arms at sides, weight evenly on both feet, facing right"
+        output: guybrush_idle
+        seed: 2100
+      walk1:
+        pose: "mid-stride right foot forward, left arm swinging forward, right arm back, facing right"
+        output: guybrush_walk1
+        seed: 2101
+      walk2:
+        pose: "passing position, feet together, arms at center, slight lean forward, facing right"
+        output: guybrush_walk2
+        seed: 2102
+      walk3:
+        pose: "mid-stride left foot forward, right arm swinging forward, left arm back, facing right"
+        output: guybrush_walk3
+        seed: 2103
+      walk4:
+        pose: "full extension stride, feet wide apart, arms at full swing, facing right"
+        output: guybrush_walk4
+        seed: 2104
+
+  lechuck:
+    identity: >-
+      ghost pirate captain, undead supernatural figure, massive imposing frame,
+      large black beard made of dark smoke and shadow tendrils, glowing red pupils
+      in black eyes, hollowed sunken cheeks, tattered large captain's coat
+      with gold buttons, rotting captain's hat with skull emblem,
+      ethereal blue-green ghostly aura surrounding entire body,
+      skeletal hands with long fingers
+    base_seed: 5100
+    facing: left
+
+    portraits:
+      angry:
+        expression: "furious glaring red eyes wide, mouth twisted in rage, brow deeply furrowed, veins of dark energy"
+        output: lechuck_angry
+        seed: 5101
+      sinister:
+        expression: "evil slow smirk, half-lidded glowing eyes, one eyebrow arched menacingly, unsettling calm"
+        output: lechuck_sinister
+        seed: 5102
+      scheming:
+        expression: "fingers steepled, eyes narrowed plotting, a slight knowing smile, dangerous look"
+        output: lechuck_scheming
+        seed: 5103
+
+    sprites:
+      idle:
+        pose: "hovering slightly above ground, arms at sides, coat drifting, menacing still pose, facing right"
+        output: lechuck_idle
+        seed: 2200
+      walk1:
+        pose: "floating forward, right arm reaching ahead, cape and coat trailing behind, facing right"
+        output: lechuck_walk1
+        seed: 2201
+      walk2:
+        pose: "gliding forward, arms at sides, ethereal trail of smoke behind, facing right"
+        output: lechuck_walk2
+        seed: 2202
+
+  elaine:
+    identity: >-
+      confident young female governor, flowing auburn-brown hair to shoulders,
+      sharp intelligent green eyes, strong cheekbones, determined elegant face,
+      wearing a deep navy blue dress with gold embroidered trim at collar and
+      cuffs, gold brooch, practical leather boots, a short cape,
+      poised and authoritative bearing
+    base_seed: 5200
+    facing: left
+
+    portraits:
+      confident:
+        expression: "knowing slight smile, eyes direct and sharp, chin raised, self-assured calm authority"
+        output: elaine_confident
+        seed: 5201
+      concerned:
+        expression: "brow slightly furrowed with worry, eyes showing concern but still strong, lips pressed"
+        output: elaine_concerned
+        seed: 5202
+      amused:
+        expression: "one eyebrow raised, corner of mouth curling in wry amusement, eyes sparkling"
+        output: elaine_amused
+        seed: 5203
+
+    sprites:
+      idle:
+        pose: "standing tall confident, hands on hips, weight on one leg, facing right"
+        output: elaine_idle
+        seed: 2300
+      walk1:
+        pose: "walking right foot forward, cape swaying, arms natural, facing right"
+        output: elaine_walk1
+        seed: 2301
+      walk2:
+        pose: "walking left foot forward, cape swaying opposite direction, facing right"
+        output: elaine_walk2
+        seed: 2302
+
+  voodoo_lady:
+    identity: >-
+      ancient voodoo woman, dark deeply wrinkled skin, wild silver-white hair
+      shot through with colorful glass beads and small bones woven in,
+      piercing dark eyes with unsettling wisdom, a wide knowing smile
+      showing aged teeth, multiple layered robes in purple, deep burgundy
+      and black with voodoo symbols embroidered, heavy necklace of small
+      bones, feathers, and charms, hunched slightly but radiating power
+    base_seed: 5300
+    facing: right
+
+    portraits:
+      mysterious:
+        expression: "one eye squinted wisely, the other wide and knowing, a slow mysterious smile, lit from below"
+        output: voodoo_lady_mysterious
+        seed: 5301
+      serious:
+        expression: "both eyes wide and intense, lips set in a grave warning expression, furrowed ancient brow"
+        output: voodoo_lady_serious
+        seed: 5302
+
+    sprites:
+      idle:
+        pose: "standing, arms slightly out holding a glowing voodoo doll, facing right"
+        output: voodoo_lady
+        seed: 2400
+
+  bartender:
+    identity: >-
+      stocky gruff pirate bartender, completely bald shaved head with a worn
+      red bandana tied around forehead, small dark eyes set deep under heavy
+      brow, thick black handlebar mustache, large jaw, short thick neck,
+      wide shoulders, wearing a rough brown leather apron over a faded
+      cream striped shirt with rolled sleeves, large meaty forearms
+    base_seed: 5400
+    facing: right
+
+    portraits:
+      suspicious:
+        expression: "eyes narrowed to slits, lip curled in distrust, arms crossed posture implied, skeptical squint"
+        output: bartender_suspicious
+        seed: 5401
+      gruff:
+        expression: "flat unimpressed expression, eyebrow raised, mouth a straight line, bored but watchful"
+        output: bartender_gruff
+        seed: 5402
+
+    sprites:
+      idle:
+        pose: "standing behind bar, arms crossed, weight back, staring forward, facing right"
+        output: bartender
+        seed: 2500
