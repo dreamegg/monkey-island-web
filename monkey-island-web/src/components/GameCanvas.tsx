@@ -81,7 +81,7 @@ export default function GameCanvas() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    renderScene(ctx, roomId, playerPos, facing, isMoving, frame, hoveredObject, dialogueActive);
+    renderScene(ctx, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, performance.now());
   }, [frame, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive]);
 
   const getCanvasCoords = useCallback(

@@ -60,8 +60,8 @@ BASE_DIR = PIPELINE_DIR / "bases"  # Canonical base images (Phase 1 output)
 
 # ── Generation settings ─────────────────────────────────────────
 PORTRAIT_CONFIG = {
-    "gen_width":  256,
-    "gen_height": 256,
+    "gen_width":  128,
+    "gen_height": 128,
     "target_size": (64, 64),
     "num_inference_steps": 30,
     "guidance_scale": 3.5,
@@ -75,8 +75,8 @@ PORTRAIT_CONFIG = {
 }
 
 SPRITE_CONFIG = {
-    "gen_width":  256,
-    "gen_height": 384,
+    "gen_width":  128,
+    "gen_height": 192,
     "target_size": (32, 48),
     "num_inference_steps": 28,
     "guidance_scale": 3.5,
@@ -108,36 +108,76 @@ _pipeline_cache: dict[str, Any] = {}
 
 def load_pipeline(img2img: bool = False) -> Any:
     import torch
-    from diffusers import FluxImg2ImgPipeline, FluxPipeline
+    from diffusers import FluxImg2ImgPipeline, FluxPipeline, FluxTransformer2DModel
+    from transformers import BitsAndBytesConfig, T5EncoderModel
 
-    cache_key = "img2img" if img2img else "txt2img"
-    if cache_key in _pipeline_cache:
-        return _pipeline_cache[cache_key]
+    # img2img reuses the same model weights as txt2img — never load twice
+    if "txt2img" not in _pipeline_cache:
+        MODEL_ID = "black-forest-labs/FLUX.1-dev"
+        LORA_ID  = "nerijs/pixel-art-xl"
+        dtype    = torch.bfloat16
 
-    MODEL_ID = "black-forest-labs/FLUX.1-dev"
-    LORA_ID  = "nerijs/pixel-art-xl"
-    dtype    = torch.bfloat16
+        print("[pipeline] Loading base pipeline (NF4 quantized)...")
 
-    print(f"[pipeline] Loading {'img2img' if img2img else 'txt2img'} pipeline...")
-    if img2img:
-        pipe = FluxImg2ImgPipeline.from_pretrained(
-            MODEL_ID, torch_dtype=dtype, low_cpu_mem_usage=True, local_files_only=True,
+        nf4_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=dtype,
         )
-    else:
+
+        print("[pipeline] Loading transformer (NF4) → GPU...")
+        transformer = FluxTransformer2DModel.from_pretrained(
+            MODEL_ID,
+            subfolder="transformer",
+            quantization_config=nf4_config,
+            torch_dtype=dtype,
+            device_map="cuda:0",
+            local_files_only=True,
+        )
+
+        print("[pipeline] Loading T5 encoder (NF4) → GPU...")
+        text_encoder_2 = T5EncoderModel.from_pretrained(
+            MODEL_ID,
+            subfolder="text_encoder_2",
+            quantization_config=nf4_config,
+            torch_dtype=dtype,
+            device_map="cuda:0",
+            local_files_only=True,
+        )
+
         pipe = FluxPipeline.from_pretrained(
-            MODEL_ID, torch_dtype=dtype, low_cpu_mem_usage=True, local_files_only=True,
+            MODEL_ID,
+            transformer=transformer,
+            text_encoder_2=text_encoder_2,
+            torch_dtype=dtype,
+            low_cpu_mem_usage=True,
+            local_files_only=True,
         )
+        pipe.text_encoder.to("cuda")
+        pipe.vae.to("cuda")
 
-    try:
-        pipe.load_lora_weights(LORA_ID)
-        pipe.fuse_lora(lora_scale=0.85)
-        print("[pipeline] LoRA applied")
-    except Exception as e:
-        print(f"[pipeline] LoRA skipped: {e}")
+        try:
+            pipe.load_lora_weights(LORA_ID)
+            pipe.fuse_lora(lora_scale=0.85)
+            print("[pipeline] LoRA applied")
+        except Exception as e:
+            print(f"[pipeline] LoRA skipped: {e}")
 
-    pipe.enable_sequential_cpu_offload()
-    _pipeline_cache[cache_key] = pipe
-    return pipe
+        pipe.enable_attention_slicing()
+        pipe.vae.enable_slicing()
+        pipe.vae.enable_tiling()
+        print("[pipeline] Running on CUDA (NF4: ~9GB total VRAM)")
+        _pipeline_cache["txt2img"] = pipe
+
+    txt2img_pipe = _pipeline_cache["txt2img"]
+
+    if img2img:
+        if "img2img" not in _pipeline_cache:
+            # Reuse all components — no extra VRAM
+            _pipeline_cache["img2img"] = FluxImg2ImgPipeline(**txt2img_pipe.components)
+        return _pipeline_cache["img2img"]
+
+    return txt2img_pipe
 
 
 # ── Prompt builders ─────────────────────────────────────────────

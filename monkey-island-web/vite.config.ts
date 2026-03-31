@@ -5,6 +5,11 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   base: './',
+  server: {
+    watch: {
+      ignored: ['**/tools/**', '**/node_modules/**', '**/.venv/**'],
+    },
+  },
   build: {
     rollupOptions: {
       input: {

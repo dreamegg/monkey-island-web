@@ -50,25 +50,41 @@ characters:
 
     sprites:
       idle:
-        pose: "standing relaxed, arms at sides, weight evenly on both feet, facing right"
+        pose: "standing relaxed upright, arms at sides, weight evenly on both feet, facing right"
         output: guybrush_idle
         seed: 2100
+      idle2:
+        pose: "standing with slight knee bend, weight shifted to one hip, relaxed slouch, facing right"
+        output: guybrush_idle2
+        seed: 2105
       walk1:
-        pose: "mid-stride right foot forward, left arm swinging forward, right arm back, facing right"
+        pose: "right heel strike, right foot forward and planted, left arm swinging forward, body tall, facing right"
         output: guybrush_walk1
         seed: 2101
       walk2:
-        pose: "passing position, feet together, arms at center, slight lean forward, facing right"
+        pose: "right recoil, body lowering, left foot mid-swing, arms crossing at center, facing right"
         output: guybrush_walk2
         seed: 2102
       walk3:
-        pose: "mid-stride left foot forward, right arm swinging forward, left arm back, facing right"
+        pose: "left heel strike, left foot forward and planted, right arm swinging forward, body tall, facing right"
         output: guybrush_walk3
         seed: 2103
       walk4:
-        pose: "full extension stride, feet wide apart, arms at full swing, facing right"
+        pose: "left recoil, body lowering, right foot mid-swing, arms crossing at center, facing right"
         output: guybrush_walk4
         seed: 2104
+      talk1:
+        pose: "standing, mouth wide open mid-speech, one hand raised gesturing, facing right"
+        output: guybrush_talk1
+        seed: 2106
+      talk2:
+        pose: "standing, mouth half open, lips forming a word, hand slightly raised, facing right"
+        output: guybrush_talk2
+        seed: 2107
+      pickup:
+        pose: "bending forward at the waist, arm reaching down toward the ground, knees slightly bent, facing right"
+        output: guybrush_pickup
+        seed: 2108
 
   lechuck:
     identity: >-
@@ -100,6 +116,10 @@ characters:
         pose: "hovering slightly above ground, arms at sides, coat drifting, menacing still pose, facing right"
         output: lechuck_idle
         seed: 2200
+      idle2:
+        pose: "hovering, slowly rotating head, smoky beard tendrils shifting, arms slightly raised, facing right"
+        output: lechuck_idle2
+        seed: 2205
       walk1:
         pose: "floating forward, right arm reaching ahead, cape and coat trailing behind, facing right"
         output: lechuck_walk1
@@ -108,6 +128,14 @@ characters:
         pose: "gliding forward, arms at sides, ethereal trail of smoke behind, facing right"
         output: lechuck_walk2
         seed: 2202
+      talk1:
+        pose: "standing, mouth open wide in a booming shout, one arm raised pointing, coat billowing, facing right"
+        output: lechuck_talk1
+        seed: 2206
+      talk2:
+        pose: "standing, mouth slightly open in a menacing grin, head tilted, facing right"
+        output: lechuck_talk2
+        seed: 2207
 
   elaine:
     identity: >-
@@ -138,14 +166,30 @@ characters:
         pose: "standing tall confident, hands on hips, weight on one leg, facing right"
         output: elaine_idle
         seed: 2300
+      idle2:
+        pose: "standing with arms crossed, weight shifted, chin slightly raised, composed bearing, facing right"
+        output: elaine_idle2
+        seed: 2305
       walk1:
-        pose: "walking right foot forward, cape swaying, arms natural, facing right"
+        pose: "right heel strike, right foot forward planted, cape swaying forward, arm swinging, facing right"
         output: elaine_walk1
         seed: 2301
       walk2:
-        pose: "walking left foot forward, cape swaying opposite direction, facing right"
+        pose: "passing position, feet together, cape settling, arms at center, slight forward lean, facing right"
         output: elaine_walk2
         seed: 2302
+      walk3:
+        pose: "left heel strike, left foot forward planted, cape swaying other direction, facing right"
+        output: elaine_walk3
+        seed: 2303
+      talk1:
+        pose: "standing, mouth open mid-sentence, one hand raised with authority, facing right"
+        output: elaine_talk1
+        seed: 2306
+      talk2:
+        pose: "standing, lips pursed as if finishing a sentence, hand gesturing forward, facing right"
+        output: elaine_talk2
+        seed: 2307
 
   voodoo_lady:
     identity: >-
