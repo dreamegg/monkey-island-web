@@ -1,6 +1,7 @@
 import { getRoom } from './RoomLoader';
 import { CANVAS_W, CANVAS_H, VERBS } from './types';
 import type { SceneObject, Exit, VerbId, NPC } from './types';
+import { useGameStore } from './GameEngine';
 
 export interface HitTestResult {
   type: 'object' | 'exit' | 'npc';
@@ -12,6 +13,13 @@ export interface HitTestResult {
 const NPC_HIT_W = 40;
 const NPC_HIT_H = 90;
 
+function getVisibleObjects(roomId: string): SceneObject[] {
+  const room = getRoom(roomId);
+  if (!room) return [];
+  const pickedObjects = useGameStore.getState().pickedObjects;
+  return room.objects.filter((o) => !pickedObjects.includes(o.id));
+}
+
 export function hitTest(
   roomId: string,
   canvasX: number,
@@ -20,7 +28,7 @@ export function hitTest(
   const room = getRoom(roomId);
   if (!room) return null;
 
-  // Check NPCs first (priority over objects)
+  // NPCs first (priority over objects)
   if (room.npcs) {
     for (const npc of room.npcs) {
       const nx = npc.x * CANVAS_W - NPC_HIT_W / 2;
@@ -36,7 +44,7 @@ export function hitTest(
     }
   }
 
-  // Check exits
+  // Exits
   for (const exit of room.exits) {
     if (
       canvasX >= exit.x * CANVAS_W &&
@@ -48,8 +56,8 @@ export function hitTest(
     }
   }
 
-  // Check objects
-  for (const obj of room.objects) {
+  // Objects (filter picked-up ones)
+  for (const obj of getVisibleObjects(roomId)) {
     if (
       canvasX >= obj.x * CANVAS_W &&
       canvasX <= obj.x * CANVAS_W + obj.w &&
@@ -71,7 +79,7 @@ export function getHoverTarget(
   const room = getRoom(roomId);
   if (!room) return null;
 
-  // Check NPCs
+  // NPCs
   if (room.npcs) {
     for (const npc of room.npcs) {
       const nx = npc.x * CANVAS_W - NPC_HIT_W / 2;
@@ -87,8 +95,9 @@ export function getHoverTarget(
     }
   }
 
+  const visibleObjects = getVisibleObjects(roomId);
   const allTargets = [
-    ...room.objects.map((o) => ({ ...o, w: o.w || 30, h: o.h || 30 })),
+    ...visibleObjects.map((o) => ({ ...o, w: o.w || 30, h: o.h || 30 })),
     ...room.exits.map((e) => ({ ...e, w: e.w || 30, h: e.h || 30 })),
   ];
 

@@ -18,14 +18,37 @@ export function executeVerbAction(
   get: GetFn,
   set: SetFn,
 ) {
+  const state = get();
+  const selectedItem = state.selectedInventoryItem;
+
+  // Use selected inventory item on this object
+  if (selectedItem && verb === 'use' && obj.useWith?.[selectedItem.id]) {
+    set({ selectedInventoryItem: null, cursorAction: '' });
+    runScript(obj.useWith[selectedItem.id], get());
+    return;
+  }
+
+  // Clicked with a selected item but no matching useWith handler
+  if (selectedItem && verb === 'use') {
+    set({
+      selectedInventoryItem: null,
+      cursorAction: '',
+      message: `${selectedItem.icon} ${selectedItem.name}을(를) ${obj.name}에 사용할 수 없다.`,
+    });
+    return;
+  }
+
   const action = obj.actions?.[verb];
   if (action) {
-    // Legacy item pickup: obj.item present → direct acquisition without running script
+    // Legacy item pickup: obj.item present → direct acquisition
     if (verb === 'pick_up' && obj.item) {
-      const state = get();
       if (!state.inventory.find((i) => i.id === obj.item!.id)) {
         state.addItem(obj.item);
+        state.hideObject(obj.id);
         set({ message: `${obj.item.icon} ${obj.item.name}을(를) 획득했다!` });
+        return;
+      } else {
+        set({ message: `이미 ${obj.item.name}을(를) 가지고 있다.` });
         return;
       }
     }

@@ -1,6 +1,5 @@
 import type { Script, ScriptCommand, Item } from './types';
 
-// Minimal interface to avoid circular dependency with GameEngine
 export interface ScriptContext {
   setMessage: (msg: string) => void;
   setFlag: (flag: string, value: boolean) => void;
@@ -9,6 +8,8 @@ export interface ScriptContext {
   removeItem: (id: string) => void;
   changeRoom: (roomId: string, entryX: number) => void;
   startDialogue: (id: string) => void;
+  hideObject: (objectId: string) => void;
+  startInsultCombat: (opponentId: string) => void;
 }
 
 export function runScript(script: Script, ctx: ScriptContext): void {
@@ -41,6 +42,12 @@ function executeCommand(cmd: ScriptCommand, ctx: ScriptContext): void {
       break;
     case 'start_dialogue':
       ctx.startDialogue(cmd.id);
+      break;
+    case 'hide_object':
+      ctx.hideObject(cmd.id);
+      break;
+    case 'start_insult_combat':
+      ctx.startInsultCombat(cmd.opponentId);
       break;
     case 'if': {
       const flagValue = ctx.getFlag(cmd.flag);
