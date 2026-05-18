@@ -17,6 +17,7 @@ export default function GameCanvas() {
   const hoveredObject = useGameStore((s) => s.hoveredObject);
   const selectedVerb = useGameStore((s) => s.selectedVerb);
   const dialogueActive = useGameStore((s) => s.dialogueActive);
+  const playerSprite = useGameStore((s) => s.playerSprite);
 
   const tickFrame = useGameStore((s) => s.tickFrame);
   const tickMovement = useGameStore((s) => s.tickMovement);
@@ -81,8 +82,8 @@ export default function GameCanvas() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    renderScene(ctx, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, performance.now());
-  }, [frame, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive]);
+    renderScene(ctx, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, performance.now(), playerSprite);
+  }, [frame, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, playerSprite]);
 
   const getCanvasCoords = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {

@@ -61,8 +61,8 @@ OBJECT_SYSTEM = """\
 {
   "id": "snake_case_english_id",
   "name": "한국어 표시 이름",
-  "x": 0.5,      // 정규화된 중심 X (0.0-1.0), 세그멘테이션 centroid 사용
-  "y": 0.65,     // 정규화된 중심 Y (0.0-1.0), 세그멘테이션 centroid 사용
+  "x": 0.3,      // 오브젝트 좌상단 X (0.0-1.0) = bbox.x  ← centroid 아님!
+  "y": 0.5,      // 오브젝트 좌상단 Y (0.0-1.0) = bbox.y  ← centroid 아님!
   "w": 80,       // 픽셀 너비 = bbox.w * 1600 (최소 40)
   "h": 80,       // 픽셀 높이 = bbox.h * 800  (최소 40)
   "pickable": false,
@@ -82,6 +82,9 @@ OBJECT_SYSTEM = """\
 규칙:
 - 오브젝트 id와 item id: 영어 snake_case만 사용 (예: wooden_barrel, old_rope)
 - 모든 name/text 값은 자연스러운 한국어여야 합니다
+- x, y는 오브젝트의 좌상단(top-left) 정규화 좌표: x = bbox.x, y = bbox.y
+  (centroid가 아님! 게임 엔진이 top-left 기준으로 hit-test를 수행함)
+- w = bbox.w * 1600, h = bbox.h * 800 (픽셀 단위, 최소 40)
 - 배경 요소(하늘, 벽, 바닥, 물 등)는 건너뛰세요 — 단, 상호작용 가능한 경우 제외
 - look 액션은 항상 포함
 - 들고 다닐 수 있는 아이템에만 pick_up 포함 (item 필드도 함께)
@@ -153,8 +156,8 @@ def generate_game_objects(
                 f"감지된 세그멘테이션 오브젝트 ({len(seg_summary)}개):\n"
                 f"{json.dumps(seg_summary, ensure_ascii=False, indent=2)}\n\n"
                 "위 이미지에서 보이는 상호작용 가능한 오브젝트들을 게임 JSON 배열로 출력하세요.\n"
-                "각 오브젝트의 x, y 좌표는 세그멘테이션 centroid를 사용하고,\n"
-                "w = bbox.w * 1600, h = bbox.h * 800 으로 계산하세요 (최소 40).\n"
+                "중요: x = bbox.x (좌상단, centroid 아님), y = bbox.y (좌상단)\n"
+                "w = bbox.w * 1600, h = bbox.h * 800 (픽셀, 최소 40)\n"
                 "JSON 배열만 출력 (마크다운 없이)."
             ),
         })
@@ -197,20 +200,20 @@ def generate_game_objects(
 # ── Fallback: segmentation → raw game objects ────────────────────
 
 def seg_to_raw_objects(seg_objects: list[dict]) -> list[dict]:
-    """Convert segmentation results to raw (English-labeled) game objects."""
+    """Convert segmentation results to raw (English-labeled) game objects.
+    Uses bbox top-left (x,y) to match engine hit-test coordinate system."""
     raw = []
     for obj in seg_objects[:8]:
         label = obj["label"]
-        c = obj.get("centroid", {"x": 0.5, "y": 0.65})
-        bbox = obj.get("bbox", {"w": 0.05, "h": 0.05})
+        bbox = obj.get("bbox", {"x": 0.45, "y": 0.5, "w": 0.05, "h": 0.05})
         obj_id = label.replace(" ", "_").replace(",", "").lower()[:24]
         w = max(40, int(bbox.get("w", 0.05) * CANVAS_W))
         h = max(40, int(bbox.get("h", 0.05) * CANVAS_H))
         raw.append({
             "id": obj_id,
             "name": label,
-            "x": round(float(c.get("x", 0.5)), 4),
-            "y": round(float(c.get("y", 0.65)), 4),
+            "x": round(float(bbox.get("x", 0.45)), 4),  # top-left X
+            "y": round(float(bbox.get("y", 0.5)), 4),   # top-left Y
             "w": w,
             "h": h,
             "pickable": False,

@@ -15,6 +15,7 @@ export function renderScene(
   hoveredObject: string | null,
   dialogueActive: boolean = false,
   elapsedMs: number = 0,
+  playerSprite: string = 'guybrush',
 ) {
   const room = getRoom(roomId);
   if (!room) return;
@@ -74,7 +75,7 @@ export function renderScene(
 
   const drewSprite = drawCharacterSprite(
     ctx,
-    'guybrush',
+    playerSprite,
     playerPos.x * CANVAS_W,
     playerPos.y * CANVAS_H,
     facing,

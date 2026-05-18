@@ -16,6 +16,12 @@ import {
   pickRandomInsult,
   type InsultPair,
 } from './InsultCombat';
+import {
+  type GameConfig,
+  MONKEY_ISLAND_CONFIG,
+  getActiveConfig,
+  setActiveConfig,
+} from './GameConfig';
 
 // ── Insult combat runtime state ───────────────────────────
 export interface InsultCombatState {
@@ -35,6 +41,8 @@ export interface InsultCombatState {
 }
 
 interface GameState {
+  gameConfig: GameConfig;
+  playerSprite: string;
   roomId: string;
   playerPos: Position;
   targetPos: Position | null;
@@ -85,16 +93,18 @@ interface GameActions {
   startInsultCombat: (opponentId: string) => void;
   answerInsult: (choiceText: string) => void;
   dismissCombatResult: () => void;
+  initializeGame: (config: GameConfig) => void;
 }
 
 export type GameStore = GameState & GameActions;
 
 const MOVE_SPEED = 0.012;
-const SAVE_KEY = 'monkey_island_save';
 
 export const useGameStore = create<GameStore>((set, get) => ({
-  roomId: 'harbor',
-  playerPos: { x: 0.5, y: 0.85 },
+  gameConfig: MONKEY_ISLAND_CONFIG,
+  playerSprite: MONKEY_ISLAND_CONFIG.playerSprite,
+  roomId: MONKEY_ISLAND_CONFIG.startRoom,
+  playerPos: MONKEY_ISLAND_CONFIG.startPos,
   targetPos: null,
   facing: 'right',
   isMoving: false,
@@ -102,7 +112,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   selectedVerb: 'look',
   hoveredObject: null,
   cursorAction: '',
-  message: '원숭이 섬의 비밀에 오신 것을 환영합니다! 해적이 되기 위한 모험을 시작하세요.',
+  message: MONKEY_ISLAND_CONFIG.startMessage,
   inventory: [],
   selectedInventoryItem: null,
   pickedObjects: [],
@@ -328,10 +338,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // ── Save / Load ───────────────────────────────────────────
   saveGame: () => {
-    const { roomId, playerPos, facing, inventory, flags, pickedObjects } = get();
+    const { roomId, playerPos, facing, inventory, flags, pickedObjects, gameConfig } = get();
     const data = { roomId, playerPos, facing, inventory, flags, pickedObjects };
     try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      localStorage.setItem(gameConfig.saveKey, JSON.stringify(data));
       set({ message: '💾 게임이 저장되었습니다.' });
     } catch {
       set({ message: '저장에 실패했습니다.' });
@@ -340,7 +350,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   loadGame: () => {
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
+      const raw = localStorage.getItem(get().gameConfig.saveKey);
       if (!raw) {
         set({ message: '저장된 게임이 없습니다.' });
         return false;
@@ -474,6 +484,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
         set({ message: '결투에서 졌다... 다시 도전하라!' });
       }
     }
+  },
+
+  initializeGame: (config: GameConfig) => {
+    setActiveConfig(config);
+    set({
+      gameConfig: config,
+      playerSprite: config.playerSprite,
+      roomId: config.startRoom,
+      playerPos: config.startPos,
+      targetPos: null,
+      facing: 'right',
+      isMoving: false,
+      frame: 0,
+      selectedVerb: 'look',
+      hoveredObject: null,
+      cursorAction: '',
+      message: config.startMessage,
+      inventory: [],
+      selectedInventoryItem: null,
+      pickedObjects: [],
+      pendingAction: null,
+      dialogueActive: false,
+      currentDialogue: null,
+      currentNode: null,
+      flags: {},
+      insultCombat: null,
+    });
   },
 }));
 

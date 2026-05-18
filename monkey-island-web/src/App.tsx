@@ -8,6 +8,7 @@ import { playRoomMusic, playIntroMusic, stopMusic } from './utils/audioManager';
 import { initDialogues } from './data/dialogues';
 import { preloadJsonDialogues } from './engine/DialogueLoader';
 import { preloadAllDepthConfigs } from './engine/DepthSystem';
+import { loadGameConfig } from './engine/GameConfig';
 import GameCanvas from './components/GameCanvas';
 import VerbPanel from './components/VerbPanel';
 import InventoryBar from './components/InventoryBar';
@@ -16,22 +17,40 @@ import IntroScene from './components/IntroScene';
 import DialogueBox from './components/DialogueBox';
 import InsultCombatBox from './components/InsultCombatBox';
 
-const ALL_ROOMS = [
-  'harbor', 'tavern', 'forest', 'beach', 'cave',
-  'village_road', 'governor_mansion', 'mansion_interior',
-  'stan_shop', 'sword_master_area', 'prison',
-];
+function preloadGame(rooms: string[]) {
+  preloadAllBackgrounds();
+  preloadCharacterSprites();
+  initDialogues();
+  preloadAllDepthConfigs(rooms);
+  preloadJsonRooms(rooms);
+  preloadJsonDialogues(rooms);
+}
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
 
+  const gameConfig = useGameStore((s) => s.gameConfig);
+  const initializeGame = useGameStore((s) => s.initializeGame);
+
+  // Load game from ?game=xxx URL param → public/games/xxx/config.json
   useEffect(() => {
-    preloadAllBackgrounds();
-    preloadCharacterSprites();
-    initDialogues();
-    preloadAllDepthConfigs(ALL_ROOMS);
-    preloadJsonRooms(ALL_ROOMS);
-    preloadJsonDialogues(ALL_ROOMS);
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('game');
+
+    if (gameId && gameId !== 'monkey_island') {
+      loadGameConfig(gameId, import.meta.env.BASE_URL).then((config) => {
+        if (config) {
+          initializeGame(config);
+          preloadGame(config.rooms);
+        } else {
+          console.warn(`Game config not found: games/${gameId}/config.json — using default`);
+          preloadGame(gameConfig.rooms);
+        }
+      });
+    } else {
+      preloadGame(gameConfig.rooms);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,11 +73,10 @@ export default function App() {
   const currentRoom = getRoom(roomId);
   const verbLabel = VERBS.find((v) => v.id === selectedVerb)?.label ?? '';
 
-  // Trial progress indicator
-  const trial1 = flags['trial1_complete'];
-  const trial2 = flags['trial2_complete'];
-  const trial3 = flags['trial3_complete'];
-  const trialsComplete = flags['trials_complete'];
+  const trials = gameConfig.trials ?? [];
+  const trialsComplete = gameConfig.trialsCompleteFlag
+    ? flags[gameConfig.trialsCompleteFlag]
+    : false;
 
   if (showIntro) {
     return <IntroScene onFinish={() => { stopMusic(); setShowIntro(false); }} />;
@@ -93,23 +111,32 @@ export default function App() {
         }}
       >
         <span style={{ color: PALETTE.uiText, fontSize: 18 }}>
-          ☠ 원숭이 섬의 비밀
+          ☠ {gameConfig.title}
         </span>
 
-        {/* Trial progress */}
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          <span style={{ color: '#8d6e63', fontSize: 11 }}>시련:</span>
-          <span title="1. 검술 마스터 결투" style={{ fontSize: 14, opacity: trial1 ? 1 : 0.3 }}>⚔</span>
-          <span title="2. 우상 도둑질" style={{ fontSize: 14, opacity: trial2 ? 1 : 0.3 }}>🗿</span>
-          <span title="3. 보물 사냥" style={{ fontSize: 14, opacity: trial3 ? 1 : 0.3 }}>💰</span>
-          {trialsComplete && <span style={{ color: '#ffd54f', fontSize: 11 }}>☠완수!</span>}
-        </div>
+        {/* Trial / milestone progress (optional) */}
+        {trials.length > 0 && (
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <span style={{ color: '#8d6e63', fontSize: 11 }}>시련:</span>
+            {trials.map((t) => (
+              <span
+                key={t.flag}
+                title={t.label}
+                style={{ fontSize: 14, opacity: flags[t.flag] ? 1 : 0.3 }}
+              >
+                {t.icon}
+              </span>
+            ))}
+            {trialsComplete && (
+              <span style={{ color: '#ffd54f', fontSize: 11 }}>☠완수!</span>
+            )}
+          </div>
+        )}
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <span style={{ color: '#8d6e63', fontSize: 14 }}>
             {currentRoom?.name}
           </span>
-          {/* Save / Load */}
           <button
             onClick={saveGame}
             style={{
