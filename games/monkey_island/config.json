@@ -1,0 +1,22 @@
+{
+  "id": "monkey_island",
+  "title": "원숭이 섬의 비밀",
+  "saveKey": "monkey_island_save",
+  "startRoom": "harbor",
+  "startPos": { "x": 0.5, "y": 0.85 },
+  "startMessage": "원숭이 섬의 비밀에 오신 것을 환영합니다! 해적이 되기 위한 모험을 시작하세요.",
+  "playerSprite": "guybrush",
+  "rooms": [
+    "harbor", "tavern", "forest", "beach", "cave",
+    "village_road", "governor_mansion", "mansion_interior",
+    "stan_shop", "sword_master_area", "prison"
+  ],
+  "trials": [
+    { "flag": "trial1_complete", "icon": "⚔", "label": "검술 마스터 결투" },
+    { "flag": "trial2_complete", "icon": "🗿", "label": "우상 도둑질" },
+    { "flag": "trial3_complete", "icon": "💰", "label": "보물 사냥" }
+  ],
+  "trialsCompleteFlag": "trials_complete",
+  "usesInsultCombat": true,
+  "language": "ko"
+}
