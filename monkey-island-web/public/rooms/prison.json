@@ -1,0 +1,103 @@
+{
+  "id": "prison",
+  "name": "감옥",
+  "walkArea": {
+    "x1": 0.3,
+    "y1": 0.55,
+    "x2": 0.98,
+    "y2": 0.92
+  },
+  "objects": [
+    {
+      "id": "cell_bars",
+      "name": "감옥 창살",
+      "x": 0.04,
+      "y": 0.0,
+      "w": 380,
+      "h": 460,
+      "actions": {
+        "look": "두꺼운 쇠창살이다. 사람이 갇혀있다.",
+        "use": "창살을 잡아당겨봤지만 꿈쩍도 안 한다.",
+        "push": "창살이 꿈쩍도 안 한다."
+      }
+    },
+    {
+      "id": "hanging_keys",
+      "name": "열쇠꾸러미",
+      "x": 0.84,
+      "y": 0.34,
+      "w": 20,
+      "h": 30,
+      "actions": {
+        "look": "보안관 책상 위에 열쇠꾸러미가 걸려 있다.",
+        "pick_up": [
+          {
+            "cmd": "if",
+            "flag": "sheriff_distracted",
+            "then": [
+              {
+                "cmd": "give_item",
+                "id": "cell_keys",
+                "name": "감옥 열쇠",
+                "icon": "🔑"
+              },
+              {
+                "cmd": "set_flag",
+                "flag": "has_cell_keys",
+                "value": true
+              }
+            ],
+            "else": [
+              {
+                "cmd": "say",
+                "text": "보안관이 보고 있다. 가져갈 수 없다."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sheriff_desk",
+      "name": "보안관 책상",
+      "x": 0.7,
+      "y": 0.5,
+      "w": 200,
+      "h": 130,
+      "actions": {
+        "look": "보안관의 책상이다. 서류들이 어지럽게 쌓여있다.",
+        "use": "함부로 건드리면 안 될 것 같다.",
+        "open": "보안관이 노려본다."
+      }
+    }
+  ],
+  "exits": [
+    {
+      "id": "back_to_village_from_prison",
+      "name": "마을로 돌아가기",
+      "to": "village_road",
+      "x": 0.88,
+      "y": 0.55,
+      "w": 50,
+      "h": 150,
+      "walkTo": {
+        "x": 0.85,
+        "y": 0.75
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "otis",
+      "name": "오티스",
+      "x": 0.22,
+      "y": 0.55,
+      "sprite": "otis",
+      "dialogue": "otis",
+      "actions": {
+        "look": "창살 뒤에 갇혀있는 해적이다.",
+        "talk": ""
+      }
+    }
+  ]
+}
