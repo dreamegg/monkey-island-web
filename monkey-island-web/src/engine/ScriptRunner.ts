@@ -10,6 +10,7 @@ export interface ScriptContext {
   startDialogue: (id: string) => void;
   hideObject: (objectId: string) => void;
   startInsultCombat: (opponentId: string) => void;
+  triggerPickupAnim: () => void;
 }
 
 export function runScript(script: Script, ctx: ScriptContext): void {
@@ -32,6 +33,7 @@ function executeCommand(cmd: ScriptCommand, ctx: ScriptContext): void {
       break;
     case 'give_item':
       ctx.addItem({ id: cmd.id, name: cmd.name, icon: cmd.icon });
+      ctx.triggerPickupAnim();
       ctx.setMessage(`${cmd.icon} ${cmd.name}을(를) 획득했다!`);
       break;
     case 'remove_item':

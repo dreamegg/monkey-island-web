@@ -84,6 +84,7 @@ export interface NPC {
   sprite: string;
   dialogue: string;
   actions: ObjectActions;
+  facing?: Facing;
 }
 
 export interface Room {

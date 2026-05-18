@@ -115,6 +115,7 @@ function jsonToDialogueNode(nodeJson: DialogueNodeJson): DialogueNode {
         startDialogue: state.startDialogue,
         hideObject: state.hideObject,
         startInsultCombat: state.startInsultCombat,
+        triggerPickupAnim: state.triggerPickupAnim,
       });
     };
   }

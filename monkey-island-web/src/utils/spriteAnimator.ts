@@ -177,6 +177,115 @@ const ANIMS: Record<string, AnimConfig> = {
       loop: true,
     },
   },
+
+  // Secondary NPCs — reuse existing sprite sheets until dedicated sprites are made
+  carla: {
+    idle: {
+      frames: ['/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_idle2.png'],
+      frameDuration: 500,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/elaine_walk1.png', '/assets/sprites/elaine_walk2.png', '/assets/sprites/elaine_walk3.png', '/assets/sprites/elaine_walk2.png'],
+      frameDuration: 160,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/elaine_talk1.png', '/assets/sprites/elaine_talk2.png', '/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_talk2.png'],
+      frameDuration: 110,
+      loop: true,
+    },
+  },
+
+  stan: {
+    idle: {
+      frames: ['/assets/sprites/guybrush_idle.png', '/assets/sprites/guybrush_idle2.png'],
+      frameDuration: 700,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/guybrush_walk1.png', '/assets/sprites/guybrush_walk2.png', '/assets/sprites/guybrush_walk3.png', '/assets/sprites/guybrush_walk4.png'],
+      frameDuration: 140,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/guybrush_talk1.png', '/assets/sprites/guybrush_talk2.png', '/assets/sprites/guybrush_idle.png', '/assets/sprites/guybrush_talk2.png'],
+      frameDuration: 130,
+      loop: true,
+    },
+  },
+
+  sheriff: {
+    idle: {
+      frames: ['/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_idle2.png'],
+      frameDuration: 800,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/elaine_walk1.png', '/assets/sprites/elaine_walk2.png', '/assets/sprites/elaine_walk3.png', '/assets/sprites/elaine_walk2.png'],
+      frameDuration: 180,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/elaine_talk1.png', '/assets/sprites/elaine_talk2.png', '/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_talk2.png'],
+      frameDuration: 140,
+      loop: true,
+    },
+  },
+
+  otis: {
+    idle: {
+      frames: ['/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_idle2.png'],
+      frameDuration: 600,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/lechuck_walk1.png', '/assets/sprites/lechuck_walk2.png', '/assets/sprites/lechuck_walk1.png', '/assets/sprites/lechuck_walk2.png'],
+      frameDuration: 230,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/lechuck_talk1.png', '/assets/sprites/lechuck_talk2.png', '/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_talk2.png'],
+      frameDuration: 140,
+      loop: true,
+    },
+  },
+
+  mansion_guard: {
+    idle: {
+      frames: ['/assets/sprites/elaine_idle.png'],
+      frameDuration: 1200,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/elaine_walk1.png', '/assets/sprites/elaine_walk2.png', '/assets/sprites/elaine_walk3.png', '/assets/sprites/elaine_walk2.png'],
+      frameDuration: 170,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/elaine_talk1.png', '/assets/sprites/elaine_talk2.png', '/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_talk2.png'],
+      frameDuration: 150,
+      loop: true,
+    },
+  },
+
+  three_pirates: {
+    idle: {
+      frames: ['/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_idle2.png'],
+      frameDuration: 550,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/lechuck_walk1.png', '/assets/sprites/lechuck_walk2.png'],
+      frameDuration: 220,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/lechuck_talk1.png', '/assets/sprites/lechuck_talk2.png', '/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_talk2.png'],
+      frameDuration: 130,
+      loop: true,
+    },
+  },
 };
 
 // ── Time-based frame selection ────────────────────────────────

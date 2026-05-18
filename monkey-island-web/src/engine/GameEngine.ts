@@ -60,6 +60,8 @@ interface GameState {
   dialogueActive: boolean;
   currentDialogue: string | null;
   currentNode: string | null;
+  dialogueNpcId: string | null;
+  pickupAnimStart: number | null;
   flags: Record<string, boolean>;
   insultCombat: InsultCombatState | null;
 }
@@ -81,7 +83,8 @@ interface GameActions {
   selectInventoryItem: (item: Item | null) => void;
   hideObject: (objectId: string) => void;
   changeRoom: (roomId: string, entryX: number) => void;
-  startDialogue: (dialogueId: string) => void;
+  startDialogue: (dialogueId: string, npcId?: string) => void;
+  triggerPickupAnim: () => void;
   advanceDialogue: () => void;
   selectChoice: (choiceIndex: number) => void;
   endDialogue: () => void;
@@ -120,6 +123,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   dialogueActive: false,
   currentDialogue: null,
   currentNode: null,
+  dialogueNpcId: null,
+  pickupAnimStart: null,
   flags: {},
   insultCombat: null,
 
@@ -268,7 +273,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  startDialogue: (dialogueId) => {
+  startDialogue: (dialogueId, npcId) => {
     const tree = getDialogueTree(dialogueId);
     if (!tree) return;
     const startNode = getDialogueNode(dialogueId, tree.startNode);
@@ -277,11 +282,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       dialogueActive: true,
       currentDialogue: dialogueId,
       currentNode: tree.startNode,
+      dialogueNpcId: npcId ?? null,
       targetPos: null,
       isMoving: false,
       pendingAction: null,
     });
   },
+
+  triggerPickupAnim: () => set({ pickupAnimStart: performance.now() }),
 
   advanceDialogue: () => {
     const { currentDialogue, currentNode } = get();
@@ -321,6 +329,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       dialogueActive: false,
       currentDialogue: null,
       currentNode: null,
+      dialogueNpcId: null,
     });
   },
 

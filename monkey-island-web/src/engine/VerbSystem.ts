@@ -45,6 +45,7 @@ export function executeVerbAction(
       if (!state.inventory.find((i) => i.id === obj.item!.id)) {
         state.addItem(obj.item);
         state.hideObject(obj.id);
+        get().triggerPickupAnim();
         set({ message: `${obj.item.icon} ${obj.item.name}을(를) 획득했다!` });
         return;
       } else {

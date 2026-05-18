@@ -18,6 +18,8 @@ export default function GameCanvas() {
   const selectedVerb = useGameStore((s) => s.selectedVerb);
   const dialogueActive = useGameStore((s) => s.dialogueActive);
   const playerSprite = useGameStore((s) => s.playerSprite);
+  const dialogueNpcId = useGameStore((s) => s.dialogueNpcId);
+  const pickupAnimStart = useGameStore((s) => s.pickupAnimStart);
 
   const tickFrame = useGameStore((s) => s.tickFrame);
   const tickMovement = useGameStore((s) => s.tickMovement);
@@ -82,8 +84,16 @@ export default function GameCanvas() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    renderScene(ctx, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, performance.now(), playerSprite);
-  }, [frame, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, playerSprite]);
+    const now = performance.now();
+    // Pickup anim lasts 800ms (4 frames × 200ms)
+    const pickupElapsed = pickupAnimStart !== null ? now - pickupAnimStart : null;
+    const playerAnimState = pickupElapsed !== null && pickupElapsed < 800
+      ? 'pickup'
+      : dialogueActive ? 'talk'
+      : isMoving ? 'walk'
+      : 'idle';
+    renderScene(ctx, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, now, playerSprite, dialogueNpcId, playerAnimState);
+  }, [frame, roomId, playerPos, facing, isMoving, hoveredObject, dialogueActive, playerSprite, dialogueNpcId, pickupAnimStart]);
 
   const getCanvasCoords = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -117,16 +127,11 @@ export default function GameCanvas() {
       if (hit?.type === 'npc' && hit.npc) {
         const npc = hit.npc;
         const verb = useGameStore.getState().selectedVerb;
-        if (verb === 'talk' || verb === 'look') {
-          if (verb === 'look' && npc.actions.look) {
-            const lookAction = npc.actions.look;
-            if (typeof lookAction === 'string') setMessage(lookAction);
-          } else {
-            startDialogue(npc.dialogue);
-          }
+        if (verb === 'look' && npc.actions.look) {
+          const lookAction = npc.actions.look;
+          if (typeof lookAction === 'string') setMessage(lookAction);
         } else {
-          // Default: start dialogue for any verb on NPC
-          startDialogue(npc.dialogue);
+          startDialogue(npc.dialogue, npc.id);
         }
         return;
       }
