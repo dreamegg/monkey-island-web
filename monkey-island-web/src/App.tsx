@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useGameStore } from './engine/GameEngine';
+import { useGameStore, useGameStore as gameStore } from './engine/GameEngine';
 import { PALETTE, VERBS } from './engine/types';
 import { getRoom, preloadJsonRooms } from './engine/RoomLoader';
 import { preloadAllBackgrounds } from './utils/assetLoader';
@@ -14,6 +14,7 @@ import VerbPanel from './components/VerbPanel';
 import InventoryBar from './components/InventoryBar';
 import MessageBar from './components/MessageBar';
 import IntroScene from './components/IntroScene';
+import EndingScene from './components/EndingScene';
 import DialogueBox from './components/DialogueBox';
 import InsultCombatBox from './components/InsultCombatBox';
 
@@ -28,6 +29,7 @@ function preloadGame(rooms: string[]) {
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
+  const [showEnding, setShowEnding] = useState(false);
 
   const gameConfig = useGameStore((s) => s.gameConfig);
   const initializeGame = useGameStore((s) => s.initializeGame);
@@ -70,6 +72,14 @@ export default function App() {
     if (!showIntro) playRoomMusic(roomId);
   }, [roomId, showIntro]);
 
+  // Trigger ending when player buys a ship
+  useEffect(() => {
+    if (!showIntro && !showEnding && flags['has_ship']) {
+      stopMusic();
+      setShowEnding(true);
+    }
+  }, [flags, showIntro, showEnding]);
+
   const currentRoom = getRoom(roomId);
   const verbLabel = VERBS.find((v) => v.id === selectedVerb)?.label ?? '';
 
@@ -80,6 +90,14 @@ export default function App() {
 
   if (showIntro) {
     return <IntroScene onFinish={() => { stopMusic(); setShowIntro(false); }} />;
+  }
+
+  if (showEnding) {
+    return <EndingScene onRestart={() => {
+      setShowEnding(false);
+      setShowIntro(true);
+      useGameStore.getState().initializeGame(gameConfig);
+    }} />;
   }
 
   return (
