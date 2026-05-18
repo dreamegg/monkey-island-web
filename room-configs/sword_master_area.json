@@ -1,0 +1,36 @@
+{
+  "roomId": "sword_master_area",
+  "depthConfig": {
+    "horizonY": 0.4,
+    "nearY": 0.95,
+    "nearScale": 1.65,
+    "farScale": 0.48,
+    "walkThreshold": 0.12
+  },
+  "walkArea": [
+    [
+      0.05,
+      0.6
+    ],
+    [
+      0.18,
+      0.55
+    ],
+    [
+      0.82,
+      0.55
+    ],
+    [
+      0.95,
+      0.6
+    ],
+    [
+      0.95,
+      0.92
+    ],
+    [
+      0.05,
+      0.92
+    ]
+  ]
+}
