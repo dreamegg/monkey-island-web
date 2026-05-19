@@ -1,0 +1,28 @@
+{
+  "roomId": "prison",
+  "depthConfig": {
+    "horizonY": 0.5,
+    "nearY": 0.96,
+    "nearScale": 1.58,
+    "farScale": 0.65,
+    "walkThreshold": 0.1
+  },
+  "walkArea": [
+    [
+      0.44,
+      0.7
+    ],
+    [
+      0.97,
+      0.7
+    ],
+    [
+      0.97,
+      0.96
+    ],
+    [
+      0.44,
+      0.96
+    ]
+  ]
+}

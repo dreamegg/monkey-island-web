@@ -14,10 +14,12 @@ import RoomMapPanel from './panels/RoomMapPanel';
 import AssetViewerPanel from './panels/AssetViewerPanel';
 import AssetManagerPanel from './panels/AssetManagerPanel';
 import CharacterManagerPanel from './panels/CharacterManagerPanel';
+import StoryMakerPanel from './panels/StoryMakerPanel';
+import ImageGeneratorPanel from './panels/ImageGeneratorPanel';
 
 const ROOMS = getAllRooms();
 
-type TabId = 'rooms' | 'dialogues' | 'items' | 'map' | 'assets' | 'assetmanager' | 'characters';
+type TabId = 'rooms' | 'dialogues' | 'items' | 'map' | 'assets' | 'assetmanager' | 'characters' | 'story' | 'generator';
 
 export default function DevToolsApp() {
   const [tab, setTab] = useState<TabId>('rooms');
@@ -40,6 +42,8 @@ export default function DevToolsApp() {
     { id: 'assets', label: 'Assets' },
     { id: 'assetmanager', label: 'Assets ✦' },
     { id: 'characters', label: 'Characters' },
+    { id: 'story', label: 'Story Maker' },
+    { id: 'generator', label: 'Image Generator' },
   ];
 
   return (
@@ -65,6 +69,8 @@ export default function DevToolsApp() {
         {tab === 'assets' && <AssetViewerPanel />}
         {tab === 'assetmanager' && <AssetManagerPanel />}
         {tab === 'characters' && <CharacterManagerPanel />}
+        {tab === 'story' && <StoryMakerPanel />}
+        {tab === 'generator' && <ImageGeneratorPanel />}
       </div>
     </div>
   );

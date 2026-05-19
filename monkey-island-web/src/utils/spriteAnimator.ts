@@ -177,6 +177,114 @@ const ANIMS: Record<string, AnimConfig> = {
       loop: true,
     },
   },
+
+  carla: {
+    idle: {
+      frames: ['/assets/sprites/carla_idle.png', '/assets/sprites/carla_idle2.png'],
+      frameDuration: 500,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/carla_idle.png', '/assets/sprites/carla_talk1.png', '/assets/sprites/carla_idle2.png', '/assets/sprites/carla_talk1.png'],
+      frameDuration: 170,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/carla_talk1.png', '/assets/sprites/carla_talk2.png', '/assets/sprites/carla_idle.png', '/assets/sprites/carla_talk2.png'],
+      frameDuration: 110,
+      loop: true,
+    },
+  },
+
+  stan: {
+    idle: {
+      frames: ['/assets/sprites/stan_idle.png', '/assets/sprites/stan_idle2.png'],
+      frameDuration: 600,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/stan_idle.png', '/assets/sprites/stan_talk1.png', '/assets/sprites/stan_idle2.png', '/assets/sprites/stan_talk1.png'],
+      frameDuration: 150,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/stan_talk1.png', '/assets/sprites/stan_talk2.png', '/assets/sprites/stan_idle.png', '/assets/sprites/stan_talk2.png'],
+      frameDuration: 100,
+      loop: true,
+    },
+  },
+
+  sheriff: {
+    idle: {
+      frames: ['/assets/sprites/sheriff_idle.png', '/assets/sprites/sheriff_idle2.png'],
+      frameDuration: 700,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/sheriff_idle.png', '/assets/sprites/sheriff_talk1.png', '/assets/sprites/sheriff_idle2.png', '/assets/sprites/sheriff_talk1.png'],
+      frameDuration: 180,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/sheriff_talk1.png', '/assets/sprites/sheriff_talk2.png', '/assets/sprites/sheriff_idle.png', '/assets/sprites/sheriff_talk2.png'],
+      frameDuration: 130,
+      loop: true,
+    },
+  },
+
+  otis: {
+    idle: {
+      frames: ['/assets/sprites/otis_idle.png', '/assets/sprites/otis_idle2.png'],
+      frameDuration: 600,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/otis_idle.png', '/assets/sprites/otis_talk1.png', '/assets/sprites/otis_idle2.png', '/assets/sprites/otis_talk1.png'],
+      frameDuration: 220,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/otis_talk1.png', '/assets/sprites/otis_talk2.png', '/assets/sprites/otis_idle.png', '/assets/sprites/otis_talk2.png'],
+      frameDuration: 140,
+      loop: true,
+    },
+  },
+
+  mansion_guard: {
+    idle: {
+      frames: ['/assets/sprites/elaine_idle.png'],
+      frameDuration: 1200,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/elaine_walk1.png', '/assets/sprites/elaine_walk2.png', '/assets/sprites/elaine_walk3.png', '/assets/sprites/elaine_walk2.png'],
+      frameDuration: 170,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/elaine_talk1.png', '/assets/sprites/elaine_talk2.png', '/assets/sprites/elaine_idle.png', '/assets/sprites/elaine_talk2.png'],
+      frameDuration: 150,
+      loop: true,
+    },
+  },
+
+  three_pirates: {
+    idle: {
+      frames: ['/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_idle2.png'],
+      frameDuration: 550,
+      loop: true,
+    },
+    walk: {
+      frames: ['/assets/sprites/lechuck_walk1.png', '/assets/sprites/lechuck_walk2.png'],
+      frameDuration: 220,
+      loop: true,
+    },
+    talk: {
+      frames: ['/assets/sprites/lechuck_talk1.png', '/assets/sprites/lechuck_talk2.png', '/assets/sprites/lechuck_idle.png', '/assets/sprites/lechuck_talk2.png'],
+      frameDuration: 130,
+      loop: true,
+    },
+  },
 };
 
 // ── Time-based frame selection ────────────────────────────────

@@ -9,11 +9,17 @@ let musicVolume = 0.4;
 let musicEnabled = true;
 
 const ROOM_MUSIC: Record<string, string> = {
-  harbor: '/audio/music/harbor.wav',
-  tavern: '/audio/music/tavern.wav',
-  forest: '/audio/music/forest.wav',
-  beach: '/audio/music/beach.wav',
-  cave: '/audio/music/cave.wav',
+  harbor:            '/audio/music/harbor.wav',
+  tavern:            '/audio/music/tavern.wav',
+  forest:            '/audio/music/forest.wav',
+  beach:             '/audio/music/beach.wav',
+  cave:              '/audio/music/cave.wav',
+  village_road:      '/audio/music/village_road.wav',
+  governor_mansion:  '/audio/music/governor_mansion.wav',
+  mansion_interior:  '/audio/music/mansion_interior.wav',
+  stan_shop:         '/audio/music/stan_shop.wav',
+  sword_master_area: '/audio/music/sword_master_area.wav',
+  prison:            '/audio/music/prison.wav',
 };
 
 function getOrCreateAudio(src: string): HTMLAudioElement {

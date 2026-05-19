@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy this file to public/games/{your-game-id}/config.json and edit",
+  "id": "my_game",
+  "title": "나의 게임 제목",
+  "saveKey": "my_game_save",
+  "startRoom": "first_room",
+  "startPos": { "x": 0.5, "y": 0.85 },
+  "startMessage": "모험의 시작...",
+  "playerSprite": "guybrush",
+  "rooms": ["first_room", "second_room"],
+  "trials": [
+    { "flag": "quest1_complete", "icon": "🗡", "label": "첫 번째 임무" }
+  ],
+  "trialsCompleteFlag": "all_quests_complete",
+  "usesInsultCombat": false,
+  "language": "ko"
+}

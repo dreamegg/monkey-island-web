@@ -15,6 +15,9 @@ export function renderScene(
   hoveredObject: string | null,
   dialogueActive: boolean = false,
   elapsedMs: number = 0,
+  playerSprite: string = 'guybrush',
+  dialogueNpcId: string | null = null,
+  animState?: AnimationState,
 ) {
   const room = getRoom(roomId);
   if (!room) return;
@@ -33,7 +36,10 @@ export function renderScene(
   if (room.npcs) {
     for (const npc of room.npcs) {
       const npcScale = getScaleAt(roomId, npc.x, npc.y);
-      renderNPC(ctx, npc, elapsedMs, npcScale);
+      const isTalking = npc.id === dialogueNpcId;
+      const autoFacing: 'left' | 'right' = npc.x > playerPos.x ? 'left' : 'right';
+      const npcFacing = npc.facing ?? autoFacing;
+      renderNPC(ctx, npc, elapsedMs, npcScale, isTalking, npcFacing);
     }
   }
 
@@ -70,15 +76,15 @@ export function renderScene(
   // Draw character (with depth-based perspective scaling)
   const charScale = getScaleAt(roomId, playerPos.x, playerPos.y);
 
-  const animState: AnimationState = dialogueActive ? 'talk' : isMoving ? 'walk' : 'idle';
+  const resolvedAnim: AnimationState = animState ?? (dialogueActive ? 'talk' : isMoving ? 'walk' : 'idle');
 
   const drewSprite = drawCharacterSprite(
     ctx,
-    'guybrush',
+    playerSprite,
     playerPos.x * CANVAS_W,
     playerPos.y * CANVAS_H,
     facing,
-    animState,
+    resolvedAnim,
     elapsedMs,
     charScale,
   );
@@ -103,23 +109,49 @@ export function renderScene(
   }
 }
 
+// Per-sprite body colors for procedural fallback
+const NPC_COLORS: Record<string, { body: string; head: string }> = {
+  guybrush:      { body: PALETTE.shirt,  head: PALETTE.skin },
+  lechuck:       { body: '#1a0a2e',      head: '#4a3060' },
+  elaine:        { body: '#8b0000',      head: PALETTE.skin },
+  bartender:     { body: '#2d4a1e',      head: PALETTE.skin },
+  voodoo_lady:   { body: '#4a0e6e',      head: '#7a5c8a' },
+  three_pirates: { body: '#3d2b00',      head: PALETTE.skin },
+  carla:         { body: '#b22222',      head: PALETTE.skin },
+  stan:          { body: '#e0c030',      head: PALETTE.skin },
+  sheriff:       { body: '#1a3a5c',      head: PALETTE.skin },
+  otis:          { body: '#5c5c5c',      head: PALETTE.skin },
+  mansion_guard: { body: '#2c2c6e',      head: PALETTE.skin },
+};
+
 function renderNPC(
   ctx: CanvasRenderingContext2D,
   npc: NPC,
   elapsedMs: number,
   scale: number = 1.0,
+  isTalking: boolean = false,
+  facing: 'left' | 'right' = 'right',
 ) {
   const px = npc.x * CANVAS_W;
   const py = npc.y * CANVAS_H;
 
-  // Try animated sprite via spriteAnimator
-  const npcFacing = (npc as any).facing ?? 'right';
-  const drewNpc = drawCharacterSprite(ctx, npc.sprite, px, py, npcFacing, 'idle', elapsedMs, scale);
+  const npcAnimState: AnimationState = isTalking ? 'talk' : 'idle';
+  const drewNpc = drawCharacterSprite(ctx, npc.sprite, px, py, facing, npcAnimState, elapsedMs, scale);
   if (drewNpc) return;
 
   // Procedural NPC fallback
   const s = 3 * scale;
-  const bobY = Math.sin(elapsedMs * 0.004) * 1;
+  const bobY = isTalking
+    ? Math.sin(elapsedMs * 0.012) * 1.5
+    : Math.sin(elapsedMs * 0.004) * 1;
+
+  const colors = NPC_COLORS[npc.sprite] ?? { body: '#555', head: PALETTE.skin };
+
+  ctx.save();
+  if (facing === 'left') {
+    ctx.translate(px * 2, 0);
+    ctx.scale(-1, 1);
+  }
 
   // Shadow
   ctx.fillStyle = 'rgba(0,0,0,0.3)';
@@ -128,17 +160,26 @@ function renderNPC(
   ctx.fill();
 
   // Body
-  ctx.fillStyle = '#555';
+  ctx.fillStyle = colors.body;
   ctx.fillRect(px - 4 * s, py - 2 * s + bobY, 8 * s, 14 * s);
 
   // Head
-  ctx.fillStyle = PALETTE.skin;
+  ctx.fillStyle = colors.head;
   ctx.fillRect(px - 3 * s, py - 8 * s + bobY, 6 * s, 6 * s);
 
   // Eyes
   ctx.fillStyle = PALETTE.black;
   ctx.fillRect(px - 1.5 * s, py - 6 * s + bobY, 1.2 * s, 1.5 * s);
   ctx.fillRect(px + 0.5 * s, py - 6 * s + bobY, 1.2 * s, 1.5 * s);
+
+  // Talking mouth
+  if (isTalking) {
+    const mouthOpen = Math.sin(elapsedMs * 0.015) > 0;
+    ctx.fillStyle = PALETTE.black;
+    ctx.fillRect(px - 1.2 * s, py - 3.5 * s + bobY, 2.4 * s, mouthOpen ? 1.5 * s : 0.5 * s);
+  }
+
+  ctx.restore();
 
   // Name tag above NPC
   ctx.fillStyle = PALETTE.uiText;

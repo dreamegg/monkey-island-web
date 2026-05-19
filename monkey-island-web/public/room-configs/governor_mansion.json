@@ -1,0 +1,28 @@
+{
+  "roomId": "governor_mansion",
+  "depthConfig": {
+    "horizonY": 0.2,
+    "nearY": 0.96,
+    "nearScale": 1.55,
+    "farScale": 0.78,
+    "walkThreshold": 0.1
+  },
+  "walkArea": [
+    [
+      0.02,
+      0.7
+    ],
+    [
+      0.98,
+      0.7
+    ],
+    [
+      0.98,
+      0.96
+    ],
+    [
+      0.02,
+      0.96
+    ]
+  ]
+}

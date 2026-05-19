@@ -43,6 +43,8 @@ export type ScriptCommand =
   | { cmd: 'remove_item'; id: string }
   | { cmd: 'change_room'; room: string; entryX?: number }
   | { cmd: 'start_dialogue'; id: string }
+  | { cmd: 'hide_object'; id: string }
+  | { cmd: 'start_insult_combat'; opponentId: string }
   | { cmd: 'if'; flag: string; negate?: boolean; then: ScriptCommand[]; else?: ScriptCommand[] };
 
 export type Script = string | ScriptCommand[];
@@ -59,6 +61,7 @@ export interface SceneObject {
   w: number;
   h: number;
   actions: ObjectActions;
+  useWith?: Record<string, Script>;
   item?: Item;
 }
 
@@ -81,6 +84,7 @@ export interface NPC {
   sprite: string;
   dialogue: string;
   actions: ObjectActions;
+  facing?: Facing;
 }
 
 export interface Room {

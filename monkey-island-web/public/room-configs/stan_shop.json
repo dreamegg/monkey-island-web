@@ -1,0 +1,28 @@
+{
+  "roomId": "stan_shop",
+  "depthConfig": {
+    "horizonY": 0.35,
+    "nearY": 0.96,
+    "nearScale": 1.72,
+    "farScale": 0.45,
+    "walkThreshold": 0.1
+  },
+  "walkArea": [
+    [
+      0.0,
+      0.68
+    ],
+    [
+      1.0,
+      0.68
+    ],
+    [
+      1.0,
+      0.96
+    ],
+    [
+      0.0,
+      0.96
+    ]
+  ]
+}

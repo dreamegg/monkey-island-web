@@ -113,6 +113,9 @@ function jsonToDialogueNode(nodeJson: DialogueNodeJson): DialogueNode {
         removeItem: state.removeItem,
         changeRoom: (roomId, entryX) => state.changeRoom(roomId, entryX),
         startDialogue: state.startDialogue,
+        hideObject: state.hideObject,
+        startInsultCombat: state.startInsultCombat,
+        triggerPickupAnim: state.triggerPickupAnim,
       });
     };
   }

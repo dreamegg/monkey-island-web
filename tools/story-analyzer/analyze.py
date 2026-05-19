@@ -151,6 +151,7 @@ Output ONLY valid JSON matching this structure:
       "id": "snake_case_id",
       "name": "Korean display name",
       "description": "Brief description for background art generation",
+      "imagePrompt": "Detailed English image generation prompt for FLUX (scene composition, lighting, objects, mood, no characters)",
       "npcs": ["npc_id_1"],
       "items": ["item that can be found here"],
       "connections": ["other_room_id"]
@@ -189,6 +190,10 @@ Guidelines:
 - All names must be in Korean.
 - Keep it faithful to the source story but adapt it to adventure game structure.
 - Items should have meaningful uses (puzzles, unlocking areas, dialogue triggers).
+- imagePrompt: English prompt for FLUX image generation. Include scene composition, lighting,
+  mood, prominent objects, architectural details. No characters or people. Example:
+  "wooden Caribbean dock at sunset, weathered planks, moored sailing ships, barrels and crates,
+   warm orange glow, tropical vegetation in distance, dramatic sky"
 """
 
 ROOM_SYSTEM = f"""\
