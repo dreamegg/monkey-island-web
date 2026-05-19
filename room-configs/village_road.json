@@ -1,44 +1,28 @@
 {
   "roomId": "village_road",
   "depthConfig": {
-    "horizonY": 0.45,
+    "horizonY": 0.52,
     "nearY": 0.95,
-    "nearScale": 1.8,
-    "farScale": 0.45,
+    "nearScale": 1.82,
+    "farScale": 0.4,
     "walkThreshold": 0.12
   },
   "walkArea": [
     [
-      0.1,
-      0.55
-    ],
-    [
-      0.28,
-      0.55
-    ],
-    [
       0.35,
-      0.45
+      0.55
     ],
     [
       0.65,
-      0.45
-    ],
-    [
-      0.72,
       0.55
     ],
     [
-      0.9,
-      0.55
+      1.0,
+      0.95
     ],
     [
-      0.9,
-      0.92
-    ],
-    [
-      0.1,
-      0.92
+      0.0,
+      0.95
     ]
   ]
 }

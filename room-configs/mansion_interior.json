@@ -1,36 +1,28 @@
 {
   "roomId": "mansion_interior",
   "depthConfig": {
-    "horizonY": 0.5,
-    "nearY": 0.98,
-    "nearScale": 2.0,
-    "farScale": 0.55,
+    "horizonY": 0.4,
+    "nearY": 0.96,
+    "nearScale": 1.88,
+    "farScale": 0.62,
     "walkThreshold": 0.15
   },
   "walkArea": [
     [
-      0.05,
-      0.58
+      0.02,
+      0.55
     ],
     [
-      0.12,
-      0.52
+      0.98,
+      0.55
     ],
     [
-      0.88,
-      0.52
+      0.98,
+      0.96
     ],
     [
-      0.95,
-      0.58
-    ],
-    [
-      0.95,
-      0.92
-    ],
-    [
-      0.05,
-      0.92
+      0.02,
+      0.96
     ]
   ]
 }
